@@ -1,0 +1,65 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/template/main.xhtml">  
+
+	<ui:define name="menuitem">
+		<h:form id="indexForm">
+			<p:dataTable id="consolTable" widgetVar="consolTable" emptyMessage="Hiç kayıt bulunmamaktadır."
+				value="#{mainController.consolidated.records}" var="record" resizableColumns="false" style="text-align:center"
+				paginator="true" rows="20" styleClass="paginated" paginatorPosition="top" paginatorAlwaysVisible="false" rowsPerPageTemplate="20,50,100" >
+			
+				<p:column headerText="Dönem" style="width:10%" filterMatchMode="contains" filterBy="#{record.term}">
+					<p:outputLabel value="#{record.term}"/>
+				</p:column>
+				<p:column headerText="Üye Tipi" style="width:10%" filterMatchMode="contains" filterBy="#{record.memberType}">
+					<p:outputLabel value="#{record.memberType}"/>
+				</p:column>
+				<p:column headerText="Üye Kodu" style="width:10%" filterMatchMode="contains" filterBy="#{record.memberCode}">
+					<p:outputLabel value="#{record.memberCode}"/>
+				</p:column>
+				<p:column headerText="Risk Kodu" style="width:10%" filterMatchMode="contains" filterBy="#{record.riskCode}">
+					<p:outputLabel value="#{record.riskCode}"/>
+				</p:column>
+				<p:column headerText="Kredi Limiti" style="width:10%">
+					<p:outputLabel value="#{record.limit}">
+						<f:convertNumber pattern=""/>
+					</p:outputLabel>
+				</p:column>
+				<p:column headerText="1-12 risk" style="width:10%">
+					<p:outputLabel value="#{record.shortTermRisk}">
+						<f:convertNumber pattern="" />
+					</p:outputLabel>
+				</p:column>
+				<p:column headerText="12-24 risk" style="width:10%">
+					<p:outputLabel value="#{record.middleTermRisk}">
+						<f:convertNumber pattern="" />
+					</p:outputLabel>
+				</p:column>
+				<p:column headerText="24+ risk" style="width:10%">
+					<p:outputLabel value="#{record.longTermRisk}">
+						<f:convertNumber pattern="" />
+					</p:outputLabel>
+				</p:column>
+				<p:column headerText="Tahakkuk" style="width:10%">
+					<p:outputLabel value="#{record.tahakkuk}">
+						<f:convertNumber pattern="" />
+					</p:outputLabel>
+				</p:column>
+				<p:column headerText="Reeskont" style="width:10%">
+					<p:outputLabel value="#{record.reeskont}">
+						<f:convertNumber pattern="" />
+					</p:outputLabel>
+				</p:column>
+				<p:column headerText="Finans Kodu" style="width:10%">
+					<p:outputLabel value="#{record.finansCode}"/>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+		<f:metadata>
+			<f:event listener="#{mainController.onPageLoad}" type="preRenderView"/>
+		</f:metadata>
+	</ui:define>
+</ui:composition>
