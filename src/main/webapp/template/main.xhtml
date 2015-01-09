@@ -10,13 +10,6 @@
       
     <h:body>  
 		<p:growl id="growl_message" showDetail="true" globalOnly="true" autoUpdate="true"/>
-		<p:layout fullPage="true">
-			<p:layoutUnit position="north" size="75">
-				<ui:include src="/template/north.xhtml"/>
-			</p:layoutUnit>
-			<p:layoutUnit position="center">
-				<ui:insert name="menuitem"/>
-			</p:layoutUnit>
-		</p:layout>
+		<ui:insert name="menuitem"/>
     </h:body>  
 </html> 

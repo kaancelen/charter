@@ -13,6 +13,63 @@ import com.kaancelen.charter.models.Record;
 
 public class ChartHelper {
 	
+	/**
+	 * return bar chart model due to type
+	 * @param type, 1=>Nakit risk degisimi, 2=>Nakit/Limit risk degisimi, 3=>nakit kisa,orta,uzun vade risk degisimi
+	 * 			4=>faktoring ve leasing degisimi, 5=>Gayrinakit risk degisimi, 6=>Gayrinakit limit/risk degisimi
+	 * 			7=>Gayrinakit kisa,orta,uzun vade risk degisimi
+	 * @return
+	 */
+	public static BarChartModel draw(List<Record> records, int type){
+		BarChartModel barChartModel = new BarChartModel();
+		barChartModel.setLegendPosition("ne");
+		String title = null;
+		
+		switch (type) {
+		case 1:
+			title = "MEMZUÇ DÖNEMLERÝNE GÖRE NAKÝT RÝSK DEÐÝÞÝMÝ"; 
+			barChartModel.addSeries(ChartSeriesCalculator.tcmbNakitRisk(records, true));
+			barChartModel.addSeries(ChartSeriesCalculator.sekerbankNakitRisk(records, true));
+			break;
+		case 2:
+			title = "TCMB NAKÝT LÝMÝT/RÝSK DEÐÝÞÝMÝ";
+			barChartModel.addSeries(ChartSeriesCalculator.tcmbNakitLimit(records, true));
+			barChartModel.addSeries(ChartSeriesCalculator.tcmbNakitRisk(records, true));
+			break;
+		case 3:
+			title = "MEMZUÇ DÖNEMLERÝNE GÖRE NAKÝT KISA,ORTA,UZUN VADE RÝSK DEÐÝÞÝMÝ";
+			barChartModel.addSeries(ChartSeriesCalculator.tcmbShortTermNakitRisk(records, true));
+			barChartModel.addSeries(ChartSeriesCalculator.tcmbMiddleTermNakitRisk(records, true));
+			barChartModel.addSeries(ChartSeriesCalculator.tcmbLongTermNakitRisk(records, true));
+			break;
+		case 4:
+			title = "FAKTORÝNG VE LEASÝNG RÝSK DEÐÝÞÝMÝ ";
+			barChartModel.addSeries(new ChartSeries());
+			break;
+		case 5:
+			title = "MEMZUÇ DÖNEMLERÝNE GÖRE G.NAKÝT RÝSK DEÐÝÞÝMÝ ";
+			barChartModel.addSeries(ChartSeriesCalculator.tcmbNakitRisk(records, false));
+			barChartModel.addSeries(ChartSeriesCalculator.sekerbankNakitRisk(records, false));
+			barChartModel.addSeries(ChartSeriesCalculator.tcmbNTYTM(records));
+			break;
+		case 6:
+			title = "TCMB G.NAKÝT LÝMÝT/RÝSK DEÐÝÞÝMÝ";
+			barChartModel.addSeries(ChartSeriesCalculator.tcmbNakitLimit(records, false));
+			barChartModel.addSeries(ChartSeriesCalculator.tcmbNakitRisk(records, false));
+			break;
+		case 7:
+			title = "MEMZUÇ DÖNEMLERÝNE GÖRE G.NAKÝT KISA,ORTA,UZUN VADE RÝSK DEÐÝÞÝMÝ";
+			barChartModel.addSeries(ChartSeriesCalculator.tcmbShortTermNakitRisk(records, false));
+			barChartModel.addSeries(ChartSeriesCalculator.tcmbMiddleTermNakitRisk(records, false));
+			barChartModel.addSeries(ChartSeriesCalculator.tcmbLongTermNakitRisk(records, false));
+			break;
+		
+		}
+		
+		barChartModel.setTitle(title);
+		return barChartModel;
+	}
+	
 	public static BarChartModel drawNakitRiskChart(List<Record> records) {
 		Map<Object, Number> tcmbMap = new TreeMap<Object, Number>(new TermComparator());
 		Map<Object, Number> sekerbankMap = new TreeMap<Object, Number>(new TermComparator());

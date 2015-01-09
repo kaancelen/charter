@@ -11,6 +11,16 @@
 				value="#{mainController.consolidated.records}" var="record" resizableColumns="false" style="text-align:center"
 				paginator="true" rows="20" styleClass="paginated" paginatorPosition="top" paginatorAlwaysVisible="false" rowsPerPageTemplate="20,50,100" >
 			
+				<f:facet name="header">
+					<p:commandButton value="Dosya Yükle" oncomplete="PF('uploadFile').show()"/>
+		      		<p:outputLabel value="Yüklü Dosya : #{mainController.consolidated.filename}, yüklenme Tarihi :" style="margin-left:20px;"/>
+		      		<p:outputLabel value="#{mainController.consolidated.uploadedDate}">
+		      			<f:convertDateTime pattern="dd/MM/yy HH:mm"/>
+		      		</p:outputLabel>
+		      		<p:commandButton value="Çizdir" icon="ui-icon-pencil" action="#{mainController.drawCharts}" update=":chartDlgForm" oncomplete="PF('chartDlg').show()"
+		      			disabled="#{empty mainController.consolidated.filepath}"/>
+				</f:facet>
+			
 				<p:column headerText="Dönem" style="width:10%" filterMatchMode="contains" filterBy="#{record.term}">
 					<p:outputLabel value="#{record.term}"/>
 				</p:column>
@@ -58,6 +68,52 @@
 				</p:column>
 			</p:dataTable>
 		</h:form>
+		<!-- DIALOGSS -->
+      	<p:dialog widgetVar="uploadFile" modal="true" appendTo="@(body)" resizable="false" draggable="false"
+      		header="Dosya yükle">
+      		<h:form id="uploadFileForm" >
+      			<p:messages id="messages" autoUpdate="true"/>
+      			<p:outputLabel value="Önce dosyayı seçin daha sonra yükle butonu ile yükleyin." style="color:blue;"/>
+				<br/>
+				<p:outputLabel value="İzinli dosya uzantıları : (xls/x)" style="color:red;"/>
+				<br/>
+				<p:outputLabel value="Max. dosya boyutu 5mb" style="color:red;"/>
+				<br/>
+      			<p:fileUpload id="fileUpload" mode="advanced" sizeLimit="5000000" allowTypes="/(\.|\/)(xls|xlsx)$/"
+      				fileUploadListener="#{mainController.onUploadFile}"	update=":indexForm:consolTable"/>
+      			<br/>
+      			<p:commandButton value="Tamamla" icon="ui-icon-check" oncomplete="PF('uploadFile').hide()" update=":indexForm:consolTable"
+      				action="#{mainController.onCompleteFileUpload}"/>
+      		</h:form>
+      	</p:dialog>
+      	<!-- Charts dialog -->
+      	<p:dialog widgetVar="chartDlg" modal="true" appendTo="@(body)" resizable="false" draggable="false" header="Grafikler">
+      		<h:form id="chartDlgForm">
+      			<p:tabView>
+      				<p:tab title="1">
+      					<p:chart type="bar" model="#{mainController.nakitRisk}" style="height:500px;width:800px;"/>
+      				</p:tab>
+      				<p:tab title="2">
+      					<p:chart type="bar" model="#{mainController.limitRisk}" style="height:500px;width:800px;"/>
+      				</p:tab>
+      				<p:tab title="3">
+      					<p:chart type="bar" model="#{mainController.termNakitRisk}" style="height:500px;width:800px;"/>
+      				</p:tab>
+      				<p:tab title="4">
+      					<p:chart type="bar" model="#{mainController.facLeaRisk}" style="height:500px;width:800px;"/>
+      				</p:tab>
+      				<p:tab title="5">
+      					<p:chart type="bar" model="#{mainController.gnakitRisk}" style="height:500px;width:800px;"/>
+      				</p:tab>
+      				<p:tab title="6">
+      					<p:chart type="bar" model="#{mainController.glimitRisk}" style="height:500px;width:800px;"/>
+      				</p:tab>
+      				<p:tab title="7">
+      					<p:chart type="bar" model="#{mainController.termGnakitRisk}" style="height:500px;width:800px;"/>
+      				</p:tab>
+      			</p:tabView>
+      		</h:form>
+      	</p:dialog>
 		<f:metadata>
 			<f:event listener="#{mainController.onPageLoad}" type="preRenderView"/>
 		</f:metadata>

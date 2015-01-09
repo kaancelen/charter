@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class Record implements Comparable<Record>,Serializable{
 	
+	private static final long serialVersionUID = -8697750831779475926L;
 	private String term;	//term of record
 	private String memberType;
 	private String memberCode;

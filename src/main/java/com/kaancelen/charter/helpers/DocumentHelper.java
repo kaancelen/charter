@@ -44,7 +44,12 @@ public class DocumentHelper {
 				Iterator<Cell> cellIterator = row.cellIterator();
 				while(cellIterator.hasNext()){
 					Cell cell = cellIterator.next();
-					String value = cell.getStringCellValue().replace(".", "");
+					String value = null;
+					if(cell.getCellType() == Cell.CELL_TYPE_NUMERIC)
+						value = cell.getNumericCellValue()+"";
+					else
+						value = cell.getStringCellValue().replace(".", "");
+					
 					switch (cellIndex) {
 						case 0: record.setTerm(value);break;
 						case 1: record.setMemberType(value);break;

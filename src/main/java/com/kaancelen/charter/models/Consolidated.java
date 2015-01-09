@@ -6,6 +6,7 @@ import java.util.List;
 
 public class Consolidated implements Serializable{
 	
+	private static final long serialVersionUID = -4183756345179436115L;
 	private String filename;
 	private String filepath;
 	private Date uploadedDate;
