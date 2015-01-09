@@ -1,6 +1,7 @@
 package com.kaancelen.charter.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,7 +12,15 @@ public class Consolidated implements Serializable{
 	private String filepath;
 	private Date uploadedDate;
 	private List<Record> records;
+	private List<String> terms;
 	
+	
+	
+	public Consolidated() {
+		super();
+		terms = new ArrayList<String>();
+	}
+
 	@Override
 	public String toString() {
 		return "Consolidated [filename=" + filename + ", filepath=" + filepath
@@ -49,5 +58,13 @@ public class Consolidated implements Serializable{
 
 	public void setRecords(List<Record> records) {
 		this.records = records;
+	}
+
+	public List<String> getTerms() {
+		return terms;
+	}
+
+	public void setTerms(List<String> terms) {
+		this.terms = terms;
 	}
 }

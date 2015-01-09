@@ -4,21 +4,22 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
 import javax.faces.event.ComponentSystemEvent;
 
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.event.TabChangeEvent;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
 
@@ -38,6 +39,8 @@ public class MainController implements Serializable{
 	
 	private Consolidated consolidated;
 	private boolean isChartsDrow;//chartlar zaten cizilmis mi? Dosya degismis mi ?
+	private int activeTab;
+	private List<ColumnModel> columns = new ArrayList<ColumnModel>();
 	private BarChartModel nakitRisk;
 	private BarChartModel limitRisk;
 	private BarChartModel termNakitRisk;
@@ -49,6 +52,8 @@ public class MainController implements Serializable{
 	@PostConstruct
 	public void init(){
 		System.out.println("MainController#init");
+		consolidated = new Consolidated();//PREVENT NULL POINTER EXCEPTION
+		activeTab = 1;
 		this.resetCharts();
 	}
 	@PreDestroy
@@ -95,7 +100,7 @@ public class MainController implements Serializable{
 	 */
 	public void onCompleteFileUpload(){
 		System.out.println("MainController#onCompleteFileUpload");
-		List<Record> records = DocumentHelper.getDatasFromExcelFile(consolidated.getFilepath());
+		List<Record> records = DocumentHelper.getDatasFromExcelFile(consolidated.getFilepath(), consolidated.getTerms());
 		Collections.sort(records);//sort records
 		consolidated.setRecords(records);
 		isChartsDrow = false;//yeni dosya yuklendi
@@ -107,6 +112,7 @@ public class MainController implements Serializable{
 		if(isChartsDrow){//eger chartlar zaten cizilmisse tekrar cizmene gerek yok
 			return;
 		}
+		System.out.println("MainController#onCompleteFileUpload");
 		nakitRisk = ChartHelper.draw(consolidated.getRecords(), 1);
 		limitRisk = ChartHelper.draw(consolidated.getRecords(), 2);
 		termNakitRisk = ChartHelper.draw(consolidated.getRecords(), 3);
@@ -114,8 +120,53 @@ public class MainController implements Serializable{
 		gnakitRisk = ChartHelper.draw(consolidated.getRecords(), 5);
 		glimitRisk = ChartHelper.draw(consolidated.getRecords(), 6);
 		termGnakitRisk = ChartHelper.draw(consolidated.getRecords(), 7);
+		populateColumns();
 		isChartsDrow = true;
 	}
+	/**
+	 * run on tabchange event
+	 */
+	public void onTabChange(TabChangeEvent event){
+		System.out.println("MainController#onTabChange "+event.getTab().getTitle());
+		activeTab = Integer.parseInt(event.getTab().getTitle());
+	}
+	/**
+	 * @return table data according to active tab
+	 */
+	public List<Map<Object, Number>> getTableData(){
+		List<Map<Object, Number>> tableData = new ArrayList<Map<Object, Number>>();
+		if(activeTab == 1){
+			for (ChartSeries seri : nakitRisk.getSeries()) {
+				tableData.add(seri.getData());
+			}
+		}else if(activeTab == 2){
+			for (ChartSeries seri : limitRisk.getSeries()) {
+				tableData.add(seri.getData());
+			}
+		}if(activeTab == 3){
+			for (ChartSeries seri : termNakitRisk.getSeries()) {
+				tableData.add(seri.getData());
+			}
+		}else if(activeTab == 4){
+			for (ChartSeries seri : facLeaRisk.getSeries()) {
+				tableData.add(seri.getData());
+			}
+		}if(activeTab == 5){
+			for (ChartSeries seri : gnakitRisk.getSeries()) {
+				tableData.add(seri.getData());
+			}
+		}else if(activeTab == 6){
+			for (ChartSeries seri : glimitRisk.getSeries()) {
+				tableData.add(seri.getData());
+			}
+		}if(activeTab == 7){
+			for (ChartSeries seri : termGnakitRisk.getSeries()) {
+				tableData.add(seri.getData());
+			}
+		}
+		return tableData;
+	}
+	
 	/**
 	 * reset charts
 	 */
@@ -126,7 +177,14 @@ public class MainController implements Serializable{
         limitRisk = nakitRisk = facLeaRisk = glimitRisk = gnakitRisk = termGnakitRisk = termNakitRisk = model;//PREVENET NULL POINTER EXCEPTION
         isChartsDrow = false;
 	}
-	
+	/**
+	 * create dataTable columns
+	 */
+	private void populateColumns(){
+		for(String columnKey : consolidated.getTerms()) {
+			columns.add(new ColumnModel(columnKey, columnKey));
+		}
+	}
 	//GETTERS AND SETTERS
 	public Consolidated getConsolidated() {
 		return consolidated;
@@ -175,5 +233,33 @@ public class MainController implements Serializable{
 	}
 	public void setTermGnakitRisk(BarChartModel termGnakitRisk) {
 		this.termGnakitRisk = termGnakitRisk;
+	}
+	public int getActiveTab() {
+		return activeTab;
+	}
+	public void setActiveTab(int activeTab) {
+		this.activeTab = activeTab;
+	}
+	public List<ColumnModel> getColumns() {
+		return columns;
+	}
+	public void setColumns(List<ColumnModel> columns) {
+		this.columns = columns;
+	}
+
+	//getters and setters
+	static public class ColumnModel implements Serializable {
+		private String header;
+		private String property;
+		public ColumnModel(String header, String property) {
+			this.header = header;
+			this.property = property;
+		}
+		public String getHeader() {
+			return header;
+		}
+		public String getProperty() {
+			return property;
+		}
 	}
 }

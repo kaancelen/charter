@@ -5,8 +5,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -19,8 +21,15 @@ import com.kaancelen.charter.models.Record;
 
 public class DocumentHelper {
 	
-	public static List<Record> getDatasFromExcelFile(String filepath){
+	/**
+	 * get datas from excel file
+	 * @param filepath input filename
+	 * @param termList output, file uniq terms
+	 * @return
+	 */
+	public static List<Record> getDatasFromExcelFile(String filepath, List<String> termList){
 		List<Record> records = new ArrayList<Record>();
+		Set<String> terms = new HashSet<String>();
 		try {
 			FileInputStream inputStream = new FileInputStream(new File(filepath));
 			String mimeType = FileHelper.mimeType(filepath);
@@ -51,7 +60,7 @@ public class DocumentHelper {
 						value = cell.getStringCellValue().replace(".", "");
 					
 					switch (cellIndex) {
-						case 0: record.setTerm(value);break;
+						case 0: record.setTerm(value);terms.add(value);break;
 						case 1: record.setMemberType(value);break;
 						case 2: record.setMemberCode(value);break;
 						case 3: record.setRiskCode(value.substring(0, 3));break;
@@ -76,6 +85,7 @@ public class DocumentHelper {
 			return null;
 		}
 		
+		termList = new ArrayList<String>(terms);
 		return records;
 	}
 	

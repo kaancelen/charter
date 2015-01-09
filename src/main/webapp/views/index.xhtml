@@ -90,6 +90,7 @@
       	<p:dialog widgetVar="chartDlg" modal="true" appendTo="@(body)" resizable="false" draggable="false" header="Grafikler">
       		<h:form id="chartDlgForm">
       			<p:tabView>
+<!--       				<p:ajax event="tabChange" listener="#{mainController.onTabChange}" update=":chartDlgForm:termDataTable"/> -->
       				<p:tab title="1">
       					<p:chart type="bar" model="#{mainController.nakitRisk}" style="height:500px;width:800px;"/>
       				</p:tab>
@@ -112,6 +113,19 @@
       					<p:chart type="bar" model="#{mainController.termGnakitRisk}" style="height:500px;width:800px;"/>
       				</p:tab>
       			</p:tabView>
+<!--       			<p:dataTable id="termDataTable" emptyMessage="Data yok!" style="width:800px;" value="#{mainController.tableData}" var="data"> -->
+<!--       				<p:column headerText="Bar"> -->
+<!--       					<p:outputLabel value="Deneme"/> -->
+<!--       				</p:column> -->
+<!--       				<p:columns value="#{mainController.columns}" var="column"> -->
+<!--       					<f:facet name="header"> -->
+<!--       						<p:outputLabel value="#{column.header}"/> -->
+<!--       					</f:facet> -->
+<!--       					<p:outputLabel value="#{data.get(column.property)}"> -->
+<!--       						<f:convertNumber pattern="" /> -->
+<!--       					</p:outputLabel> -->
+<!--       				</p:columns> -->
+<!--       			</p:dataTable> -->
       		</h:form>
       	</p:dialog>
 		<f:metadata>
