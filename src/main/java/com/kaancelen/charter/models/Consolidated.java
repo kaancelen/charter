@@ -8,13 +8,12 @@ import java.util.List;
 public class Consolidated implements Serializable{
 	
 	private static final long serialVersionUID = -4183756345179436115L;
+	private String firmName;
 	private String filename;
 	private String filepath;
 	private Date uploadedDate;
 	private List<Record> records;
 	private List<String> terms;
-	
-	
 	
 	public Consolidated() {
 		super();
@@ -23,9 +22,9 @@ public class Consolidated implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Consolidated [filename=" + filename + ", filepath=" + filepath
-				+ ", uploadedDate=" + uploadedDate
-				+ ", records=" + records + "]";
+		return "Consolidated [firmName=" + firmName + ", filename=" + filename
+				+ ", filepath=" + filepath + ", uploadedDate=" + uploadedDate
+				+ ", records=" + records + ", terms=" + terms + "]";
 	}
 
 	public String getFilename() {
@@ -66,5 +65,13 @@ public class Consolidated implements Serializable{
 
 	public void setTerms(List<String> terms) {
 		this.terms = terms;
+	}
+
+	public String getFirmName() {
+		return firmName;
+	}
+
+	public void setFirmName(String firmName) {
+		this.firmName = firmName;
 	}
 }

@@ -20,46 +20,46 @@ public class ChartHelper {
 	 * 			7=>Gayrinakit kisa,orta,uzun vade risk degisimi
 	 * @return
 	 */
-	public static BarChartModel draw(List<Record> records, int type){
+	public static BarChartModel draw(List<Record> records, int type, String firmTitle){
 		BarChartModel barChartModel = new BarChartModel();
 		barChartModel.setLegendPosition("ne");
 		String title = null;
 		
 		switch (type) {
 		case 1:
-			title = "MEMZUÇ DÖNEMLERÝNE GÖRE NAKÝT RÝSK DEÐÝÞÝMÝ"; 
+			title = firmTitle+" MEMZUÇ DÖNEMLERÝNE GÖRE NAKÝT RÝSK DEÐÝÞÝMÝ"; 
 			barChartModel.addSeries(ChartSeriesCalculator.tcmbNakitRisk(records, true));
 			barChartModel.addSeries(ChartSeriesCalculator.sekerbankNakitRisk(records, true));
 			break;
 		case 2:
-			title = "TCMB NAKÝT LÝMÝT/RÝSK DEÐÝÞÝMÝ";
+			title = firmTitle+" TCMB NAKÝT LÝMÝT/RÝSK DEÐÝÞÝMÝ";
 			barChartModel.addSeries(ChartSeriesCalculator.tcmbNakitLimit(records, true));
 			barChartModel.addSeries(ChartSeriesCalculator.tcmbNakitRisk(records, true));
 			break;
 		case 3:
-			title = "MEMZUÇ DÖNEMLERÝNE GÖRE NAKÝT KISA,ORTA,UZUN VADE RÝSK DEÐÝÞÝMÝ";
+			title = firmTitle+" MEMZUÇ DÖNEMLERÝNE GÖRE NAKÝT KISA,ORTA,UZUN VADE RÝSK DEÐÝÞÝMÝ";
 			barChartModel.addSeries(ChartSeriesCalculator.tcmbShortTermNakitRisk(records, true));
 			barChartModel.addSeries(ChartSeriesCalculator.tcmbMiddleTermNakitRisk(records, true));
 			barChartModel.addSeries(ChartSeriesCalculator.tcmbLongTermNakitRisk(records, true));
 			break;
 		case 4:
-			title = "FAKTORÝNG VE LEASÝNG RÝSK DEÐÝÞÝMÝ ";
+			title = firmTitle+" FAKTORÝNG VE LEASÝNG RÝSK DEÐÝÞÝMÝ ";
 			barChartModel.addSeries(ChartSeriesCalculator.facNakitRisk(records));
 			barChartModel.addSeries(ChartSeriesCalculator.leaNakitRisk(records));
 			break;
 		case 5:
-			title = "MEMZUÇ DÖNEMLERÝNE GÖRE G.NAKÝT RÝSK DEÐÝÞÝMÝ ";
+			title = firmTitle+" MEMZUÇ DÖNEMLERÝNE GÖRE G.NAKÝT RÝSK DEÐÝÞÝMÝ ";
 			barChartModel.addSeries(ChartSeriesCalculator.tcmbNakitRisk(records, false));
 			barChartModel.addSeries(ChartSeriesCalculator.sekerbankNakitRisk(records, false));
 			barChartModel.addSeries(ChartSeriesCalculator.tcmbNTYTM(records));
 			break;
 		case 6:
-			title = "TCMB G.NAKÝT LÝMÝT/RÝSK DEÐÝÞÝMÝ";
+			title = firmTitle+" TCMB G.NAKÝT LÝMÝT/RÝSK DEÐÝÞÝMÝ";
 			barChartModel.addSeries(ChartSeriesCalculator.tcmbNakitLimit(records, false));
 			barChartModel.addSeries(ChartSeriesCalculator.tcmbNakitRisk(records, false));
 			break;
 		case 7:
-			title = "MEMZUÇ DÖNEMLERÝNE GÖRE G.NAKÝT KISA,ORTA,UZUN VADE RÝSK DEÐÝÞÝMÝ";
+			title = firmTitle+" MEMZUÇ DÖNEMLERÝNE GÖRE G.NAKÝT KISA,ORTA,UZUN VADE RÝSK DEÐÝÞÝMÝ";
 			barChartModel.addSeries(ChartSeriesCalculator.tcmbShortTermNakitRisk(records, false));
 			barChartModel.addSeries(ChartSeriesCalculator.tcmbMiddleTermNakitRisk(records, false));
 			barChartModel.addSeries(ChartSeriesCalculator.tcmbLongTermNakitRisk(records, false));

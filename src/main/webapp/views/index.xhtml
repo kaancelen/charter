@@ -12,13 +12,15 @@
 				paginator="true" rows="20" styleClass="paginated" paginatorPosition="top" paginatorAlwaysVisible="false" rowsPerPageTemplate="20,50,100" >
 			
 				<f:facet name="header">
-					<p:commandButton value="Dosya Yükle" oncomplete="PF('uploadFile').show()" /> <!-- update=":uploadFileForm" bu ajax update ibaresini koyunca file upload calismiyor!! -->
-		      		<p:outputLabel value="Yüklü Dosya : #{mainController.consolidated.filename}, yüklenme Tarihi :" style="margin-left:20px;"/>
-		      		<p:outputLabel value="#{mainController.consolidated.uploadedDate}">
-		      			<f:convertDateTime pattern="dd/MM/yy HH:mm"/>
-		      		</p:outputLabel>
-		      		<p:commandButton value="Çizdir" icon="ui-icon-pencil" action="#{mainController.drawCharts}" update=":chartDlgForm" oncomplete="PF('chartDlg').show()"
-		      			disabled="#{empty mainController.consolidated.filepath}"/>
+					<div align="left">
+						<p:commandButton value="Dosya Yukle" icon="ui-icon-arrowthickstop-1-n" oncomplete="PF('uploadFile').show()" /> <!-- update=":uploadFileForm" bu ajax update ibaresini koyunca file upload calismiyor!! -->
+			      		<p:outputLabel value="Firma : #{mainController.consolidated.firmName} Yüklü Dosya : #{mainController.consolidated.filename}, yüklenme Tarihi :" style="margin-left:20px;"/>
+			      		<p:outputLabel value="#{mainController.consolidated.uploadedDate}">
+			      			<f:convertDateTime pattern="dd/MM/yy HH:mm"/>
+			      		</p:outputLabel>
+			      		<p:commandButton value="Cizdir" icon="ui-icon-pencil" action="#{mainController.drawCharts}" update=":chartDlgForm" oncomplete="PF('chartDlg').show()"
+			      			disabled="#{empty mainController.consolidated.filepath}"/>
+					</div>
 				</f:facet>
 			
 				<p:column headerText="Dönem" style="width:10%" filterMatchMode="contains" filterBy="#{record.term}">
@@ -69,26 +71,28 @@
 			</p:dataTable>
 		</h:form>
 		<!-- DIALOGSS -->
-      	<p:dialog widgetVar="uploadFile" modal="true" appendTo="@(body)" resizable="false" draggable="false"
-      		header="Dosya yükle">
-      		<h:form id="uploadFileForm" >
+      	<p:dialog widgetVar="uploadFile" modal="true" appendTo="@(body)" resizable="false" draggable="false" header="Dosya yükle">
+      		<h:form id="uploadFileForm">
       			<p:messages id="messages" autoUpdate="true"/>
-      			<p:outputLabel value="Önce dosyayı seçin daha sonra yükle butonu ile yükleyin." style="color:blue;"/>
-				<br/>
-				<p:outputLabel value="İzinli dosya uzantıları : (xls/x)" style="color:red;"/>
-				<br/>
-				<p:outputLabel value="Max. dosya boyutu 5mb" style="color:red;"/>
-				<br/>
-      			<p:fileUpload id="fileUpload" mode="advanced" sizeLimit="5000000" allowTypes="/(\.|\/)(xls|xlsx)$/"
-      				fileUploadListener="#{mainController.onUploadFile}"	update=":indexForm"/>
-      			<br/>
-      			<p:commandButton value="Tamamla" icon="ui-icon-check" oncomplete="PF('uploadFile').hide()" update=":indexForm"
+      			<h:panelGrid columns="1" style="text-align:center">
+      				<p:outputLabel value="Önce dosyayı seçin daha sonra yükle butonu ile yükleyin." style="color:blue;"/>
+      				<p:outputLabel value="İzinli dosya uzantıları : (xls/x)" style="color:red;"/>
+      				<p:outputLabel value="Max. dosya boyutu 5mb" style="color:red;"/>
+      				<h:panelGrid columns="2">
+      					<p:outputLabel for="firmNameReq" value="Firma Adı : "/>
+      					<p:inputText id="firmNameReq" value="#{mainController.consolidated.firmName}" required="true" requiredMessage="Firma adı girmek zorunludur!"/>
+      				</h:panelGrid>
+      				<p:fileUpload id="fileUpload" mode="advanced" sizeLimit="5000000" allowTypes="/(\.|\/)(xls|xlsx)$/"
+      					fileUploadListener="#{mainController.onUploadFile}"	update=":indexForm" required="true" requiredMessage="Dosya yüklemek zorunludur!"/>
+      			</h:panelGrid>
+      			<br/><br/>
+      			<p:commandButton value="Tamamla" icon="ui-icon-check" update=":indexForm"
       				action="#{mainController.onCompleteFileUpload}"/>
       		</h:form>
       	</p:dialog>
       	<!-- Charts dialog -->
       	<p:dialog widgetVar="chartDlg" modal="true" appendTo="@(body)" resizable="false" draggable="false" header="Grafikler"
-      			height="80%" width="80%">
+      			height="80%" width="80%" maximizable="true">
       		<h:form id="chartDlgForm">
       			<p:tabView style="width:99%">
       				<p:ajax event="tabChange" listener="#{mainController.onTabChange}" update=":chartDlgForm:termDataTable"/>
@@ -113,17 +117,37 @@
       				<p:tab title="7">
       					<p:chart type="bar" model="#{mainController.termGnakitRisk}" style="height:50%"/>
       				</p:tab>
+      				<p:tab title="Dışa Aktar">
+      					<p:outputLabel value="TODO"/>
+      				</p:tab>
       			</p:tabView>
       			<p:dataTable id="termDataTable" emptyMessage="Data yok!" value="#{mainController.tableData}" var="data"
       				style="width:99%" resizableColumns="true" rowIndexVar="index">
-      				<p:column headerText="Tip">
-      					<p:outputLabel value="#{index+1}"/>
+      				<p:column headerText="Tip" style="font-size:12px">
+      					<p:panelGrid rendered="#{mainController.activeTab == 1 or mainController.activeTab == 5}">
+      						<p:outputLabel value="TCMB" rendered="#{index == 0}"/>
+      						<p:outputLabel value="Şekerbank" rendered="#{index == 1}"/>
+      						<p:outputLabel value="250-251" rendered="#{index == 2}"/>
+      					</p:panelGrid>
+      					<p:panelGrid rendered="#{mainController.activeTab == 2 or mainController.activeTab == 6}">
+      						<p:outputLabel value="Limit" rendered="#{index == 0}"/>
+      						<p:outputLabel value="Risk" rendered="#{index == 1}"/>
+      					</p:panelGrid>
+      					<p:panelGrid rendered="#{mainController.activeTab == 3 or mainController.activeTab == 7}">
+      						<p:outputLabel value="0-12" rendered="#{index == 0}"/>
+      						<p:outputLabel value="12-24" rendered="#{index == 1}"/>
+      						<p:outputLabel value="24+" rendered="#{index == 2}"/>
+      					</p:panelGrid>
+      					<p:panelGrid rendered="#{mainController.activeTab == 4}">
+      						<p:outputLabel value="Factory" rendered="#{index == 0}"/>
+      						<p:outputLabel value="Leasing" rendered="#{index == 1}"/>
+      					</p:panelGrid>
       				</p:column>
       				<p:columns value="#{mainController.terms}" var="term">
       					<f:facet name="header">
       						<p:outputLabel value="#{term}"/>
       					</f:facet>
-     					<p:outputLabel value="#{data.get(term)}" style="font-size:11px">
+     					<p:outputLabel value="#{data.get(term)}" style="font-size:12px">
      						<f:convertNumber pattern=""/>
      					</p:outputLabel>
       				</p:columns>

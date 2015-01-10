@@ -9,7 +9,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -105,6 +104,7 @@ public class MainController implements Serializable{
 		Collections.sort(records);//sort records
 		consolidated.setRecords(records);
 		isChartsDrow = false;//yeni dosya yuklendi
+		PrimefacesUtils.executeScript("PF('uploadFile').hide()");
 	}
 	/**
 	 * run on draw chart action
@@ -114,13 +114,13 @@ public class MainController implements Serializable{
 			return;
 		}
 		System.out.println("MainController#onCompleteFileUpload");
-		nakitRisk = ChartHelper.draw(consolidated.getRecords(), 1);
-		limitRisk = ChartHelper.draw(consolidated.getRecords(), 2);
-		termNakitRisk = ChartHelper.draw(consolidated.getRecords(), 3);
-		facLeaRisk = ChartHelper.draw(consolidated.getRecords(), 4);
-		gnakitRisk = ChartHelper.draw(consolidated.getRecords(), 5);
-		glimitRisk = ChartHelper.draw(consolidated.getRecords(), 6);
-		termGnakitRisk = ChartHelper.draw(consolidated.getRecords(), 7);
+		nakitRisk = ChartHelper.draw(consolidated.getRecords(), 1, consolidated.getFirmName());
+		limitRisk = ChartHelper.draw(consolidated.getRecords(), 2, consolidated.getFirmName());
+		termNakitRisk = ChartHelper.draw(consolidated.getRecords(), 3, consolidated.getFirmName());
+		facLeaRisk = ChartHelper.draw(consolidated.getRecords(), 4, consolidated.getFirmName());
+		gnakitRisk = ChartHelper.draw(consolidated.getRecords(), 5, consolidated.getFirmName());
+		glimitRisk = ChartHelper.draw(consolidated.getRecords(), 6, consolidated.getFirmName());
+		termGnakitRisk = ChartHelper.draw(consolidated.getRecords(), 7, consolidated.getFirmName());
 		isChartsDrow = true;
 		//Check terms
 		checkTerms(nakitRisk);
@@ -259,4 +259,5 @@ public class MainController implements Serializable{
 	public void setTerms(List<String> terms) {
 		this.terms = terms;
 	}
+	
 }
