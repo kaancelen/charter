@@ -12,7 +12,7 @@
 				paginator="true" rows="20" styleClass="paginated" paginatorPosition="top" paginatorAlwaysVisible="false" rowsPerPageTemplate="20,50,100" >
 			
 				<f:facet name="header">
-					<p:commandButton value="Dosya Yükle" oncomplete="PF('uploadFile').show()"/>
+					<p:commandButton value="Dosya Yükle" oncomplete="PF('uploadFile').show()" /> <!-- update=":uploadFileForm" bu ajax update ibaresini koyunca file upload calismiyor!! -->
 		      		<p:outputLabel value="Yüklü Dosya : #{mainController.consolidated.filename}, yüklenme Tarihi :" style="margin-left:20px;"/>
 		      		<p:outputLabel value="#{mainController.consolidated.uploadedDate}">
 		      			<f:convertDateTime pattern="dd/MM/yy HH:mm"/>
@@ -80,17 +80,18 @@
 				<p:outputLabel value="Max. dosya boyutu 5mb" style="color:red;"/>
 				<br/>
       			<p:fileUpload id="fileUpload" mode="advanced" sizeLimit="5000000" allowTypes="/(\.|\/)(xls|xlsx)$/"
-      				fileUploadListener="#{mainController.onUploadFile}"	update=":indexForm:consolTable"/>
+      				fileUploadListener="#{mainController.onUploadFile}"	update=":indexForm"/>
       			<br/>
-      			<p:commandButton value="Tamamla" icon="ui-icon-check" oncomplete="PF('uploadFile').hide()" update=":indexForm:consolTable"
+      			<p:commandButton value="Tamamla" icon="ui-icon-check" oncomplete="PF('uploadFile').hide()" update=":indexForm"
       				action="#{mainController.onCompleteFileUpload}"/>
       		</h:form>
       	</p:dialog>
       	<!-- Charts dialog -->
-      	<p:dialog widgetVar="chartDlg" modal="true" appendTo="@(body)" resizable="false" draggable="false" header="Grafikler">
+      	<p:dialog widgetVar="chartDlg" modal="true" appendTo="@(body)" resizable="false" draggable="false" header="Grafikler"
+      			height="800px" width="80%">
       		<h:form id="chartDlgForm">
       			<p:tabView>
-<!--       				<p:ajax event="tabChange" listener="#{mainController.onTabChange}" update=":chartDlgForm:termDataTable"/> -->
+      				<p:ajax event="tabChange" listener="#{mainController.onTabChange}" update=":chartDlgForm:termDataTable"/>
       				<p:tab title="1">
       					<p:chart type="bar" model="#{mainController.nakitRisk}" style="height:500px;width:800px;"/>
       				</p:tab>
@@ -113,19 +114,22 @@
       					<p:chart type="bar" model="#{mainController.termGnakitRisk}" style="height:500px;width:800px;"/>
       				</p:tab>
       			</p:tabView>
-<!--       			<p:dataTable id="termDataTable" emptyMessage="Data yok!" style="width:800px;" value="#{mainController.tableData}" var="data"> -->
-<!--       				<p:column headerText="Bar"> -->
-<!--       					<p:outputLabel value="Deneme"/> -->
-<!--       				</p:column> -->
-<!--       				<p:columns value="#{mainController.columns}" var="column"> -->
-<!--       					<f:facet name="header"> -->
-<!--       						<p:outputLabel value="#{column.header}"/> -->
-<!--       					</f:facet> -->
-<!--       					<p:outputLabel value="#{data.get(column.property)}"> -->
-<!--       						<f:convertNumber pattern="" /> -->
-<!--       					</p:outputLabel> -->
-<!--       				</p:columns> -->
-<!--       			</p:dataTable> -->
+      			<p:dataTable id="termDataTable" emptyMessage="Data yok!" value="#{mainController.tableData}" var="data"
+      				style="width:100%;" resizableColumns="true">
+      				<p:column headerText="Tip">
+      					<p:outputLabel value="Deneme"/>
+      				</p:column>
+      				<p:columns value="#{mainController.terms}" var="term">
+      					<f:facet name="header">
+      						<p:outputLabel value="#{term}"/>
+      					</f:facet>
+      					<div style="width:50%">
+      						<p:outputLabel value="#{data.get(term)}">
+	      						<f:convertNumber pattern=""/>
+	      					</p:outputLabel>
+      					</div>
+      				</p:columns>
+      			</p:dataTable>
       		</h:form>
       	</p:dialog>
 		<f:metadata>

@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -17,6 +18,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.kaancelen.charter.comparators.TermComparator;
 import com.kaancelen.charter.models.Record;
 
 public class DocumentHelper {
@@ -27,9 +29,8 @@ public class DocumentHelper {
 	 * @param termList output, file uniq terms
 	 * @return
 	 */
-	public static List<Record> getDatasFromExcelFile(String filepath, List<String> termList){
+	public static List<Record> getDatasFromExcelFile(String filepath){
 		List<Record> records = new ArrayList<Record>();
-		Set<String> terms = new HashSet<String>();
 		try {
 			FileInputStream inputStream = new FileInputStream(new File(filepath));
 			String mimeType = FileHelper.mimeType(filepath);
@@ -60,7 +61,7 @@ public class DocumentHelper {
 						value = cell.getStringCellValue().replace(".", "");
 					
 					switch (cellIndex) {
-						case 0: record.setTerm(value);terms.add(value);break;
+						case 0: record.setTerm(value);break;
 						case 1: record.setMemberType(value);break;
 						case 2: record.setMemberCode(value);break;
 						case 3: record.setRiskCode(value.substring(0, 3));break;
@@ -85,8 +86,20 @@ public class DocumentHelper {
 			return null;
 		}
 		
-		termList = new ArrayList<String>(terms);
 		return records;
+	}
+
+	/**
+	 * return uniq terms
+	 * @param records
+	 * @return
+	 */
+	public static List<String> getTerms(List<Record> records) {
+		Set<String> termSet = new TreeSet<>(new TermComparator());
+		for (Record record : records) {
+			termSet.add(record.getTerm());
+		}
+		return new ArrayList<String>(termSet);
 	}
 	
 	

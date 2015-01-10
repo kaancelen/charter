@@ -40,8 +40,8 @@ public class MainController implements Serializable{
 	private Consolidated consolidated;
 	private boolean isChartsDrow;//chartlar zaten cizilmis mi? Dosya degismis mi ?
 	private int activeTab;
-	private List<ColumnModel> columns = new ArrayList<ColumnModel>();
-	private BarChartModel nakitRisk;
+	private List<String> terms = new ArrayList<String>();//columns
+	private BarChartModel nakitRisk;//charts
 	private BarChartModel limitRisk;
 	private BarChartModel termNakitRisk;
 	private BarChartModel facLeaRisk;
@@ -100,7 +100,8 @@ public class MainController implements Serializable{
 	 */
 	public void onCompleteFileUpload(){
 		System.out.println("MainController#onCompleteFileUpload");
-		List<Record> records = DocumentHelper.getDatasFromExcelFile(consolidated.getFilepath(), consolidated.getTerms());
+		List<Record> records = DocumentHelper.getDatasFromExcelFile(consolidated.getFilepath());
+		terms = DocumentHelper.getTerms(records);
 		Collections.sort(records);//sort records
 		consolidated.setRecords(records);
 		isChartsDrow = false;//yeni dosya yuklendi
@@ -120,8 +121,15 @@ public class MainController implements Serializable{
 		gnakitRisk = ChartHelper.draw(consolidated.getRecords(), 5);
 		glimitRisk = ChartHelper.draw(consolidated.getRecords(), 6);
 		termGnakitRisk = ChartHelper.draw(consolidated.getRecords(), 7);
-		populateColumns();
 		isChartsDrow = true;
+		//Check terms
+		checkTerms(nakitRisk);
+		checkTerms(limitRisk);
+		checkTerms(termNakitRisk);
+		checkTerms(facLeaRisk);
+		checkTerms(gnakitRisk);
+		checkTerms(glimitRisk);
+		checkTerms(termGnakitRisk);
 	}
 	/**
 	 * run on tabchange event
@@ -178,11 +186,16 @@ public class MainController implements Serializable{
         isChartsDrow = false;
 	}
 	/**
-	 * create dataTable columns
+	 * Check if chartseries contains all terms
+	 * if not place 0
+	 * @param model
 	 */
-	private void populateColumns(){
-		for(String columnKey : consolidated.getTerms()) {
-			columns.add(new ColumnModel(columnKey, columnKey));
+	private void checkTerms(BarChartModel model){
+		for (ChartSeries chartSeries : model.getSeries()) {
+			for (String term : terms) {
+				if(!chartSeries.getData().containsKey(term))
+					chartSeries.getData().put(term, 0);
+			}
 		}
 	}
 	//GETTERS AND SETTERS
@@ -240,26 +253,10 @@ public class MainController implements Serializable{
 	public void setActiveTab(int activeTab) {
 		this.activeTab = activeTab;
 	}
-	public List<ColumnModel> getColumns() {
-		return columns;
+	public List<String> getTerms() {
+		return terms;
 	}
-	public void setColumns(List<ColumnModel> columns) {
-		this.columns = columns;
-	}
-
-	//getters and setters
-	static public class ColumnModel implements Serializable {
-		private String header;
-		private String property;
-		public ColumnModel(String header, String property) {
-			this.header = header;
-			this.property = property;
-		}
-		public String getHeader() {
-			return header;
-		}
-		public String getProperty() {
-			return property;
-		}
+	public void setTerms(List<String> terms) {
+		this.terms = terms;
 	}
 }

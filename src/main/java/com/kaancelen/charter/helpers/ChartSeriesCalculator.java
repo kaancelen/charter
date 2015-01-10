@@ -137,9 +137,9 @@ public class ChartSeriesCalculator {
 		
 		for(Record record : records){
 			if(StringHelper.inArray((nakit?BankConstants.nakitSeries:BankConstants.gnakitSeries), record.getRiskCode())){//eger nakit risk kodu ise
-				Double shortTermNakitRisk = record.getMiddleTermRisk();
+				Double middleTermNakitRisk = record.getMiddleTermRisk();
 				Double oldValue = (Double)tcmbMiddleTermNakitRiskMap.get(record.getTerm());
-				tcmbMiddleTermNakitRiskMap.put(record.getTerm(), shortTermNakitRisk + (oldValue==null?0:oldValue));//add this records total value to map
+				tcmbMiddleTermNakitRiskMap.put(record.getTerm(), middleTermNakitRisk + (oldValue==null?0:oldValue));//add this records total value to map
 			}
 		}
 		
@@ -158,9 +158,9 @@ public class ChartSeriesCalculator {
 		
 		for(Record record : records){
 			if(StringHelper.inArray((nakit?BankConstants.nakitSeries:BankConstants.gnakitSeries), record.getRiskCode())){//eger nakit risk kodu ise
-				Double shortTermNakitRisk = record.getLongTermRisk();
+				Double longTermNakitRisk = record.getLongTermRisk();
 				Double oldValue = (Double)tcmbLongTermNakitRiskMap.get(record.getTerm());
-				tcmbLongTermNakitRiskMap.put(record.getTerm(), shortTermNakitRisk + (oldValue==null?0:oldValue));//add this records total value to map
+				tcmbLongTermNakitRiskMap.put(record.getTerm(), longTermNakitRisk + (oldValue==null?0:oldValue));//add this records total value to map
 			}
 		}
 		
@@ -179,14 +179,59 @@ public class ChartSeriesCalculator {
 		
 		for(Record record : records){
 			if(StringHelper.inArray(BankConstants.ntytm, record.getRiskCode())){//eger nakit risk kodu ise
-				Double shortTermNakitRisk = record.getMiddleTermRisk();
+				Double ntytm = record.getShortTermRisk() + record.getMiddleTermRisk() + record.getLongTermRisk()
+						+ record.getTahakkuk() + record.getReeskont();
 				Double oldValue = (Double)tcmbNTYTMMap.get(record.getTerm());
-				tcmbNTYTMMap.put(record.getTerm(), shortTermNakitRisk + (oldValue==null?0:oldValue));//add this records total value to map
+				tcmbNTYTMMap.put(record.getTerm(), ntytm + (oldValue==null?0:oldValue));//add this records total value to map
 			}
 		}
 		
 		ChartSeries tcmbNTYTM = new ChartSeries("Nakit Teminine Yönelik Tem. Mek.(201, 251)");
 		tcmbNTYTM.setData(tcmbNTYTMMap);
 		return tcmbNTYTM;
+	}
+
+	/**
+	 * 
+	 * @param records
+	 * @return
+	 */
+	public static ChartSeries facNakitRisk(List<Record> records) {
+		Map<Object, Number> facNakitRiskMap = new TreeMap<Object, Number>(new TermComparator());
+		
+		for(Record record : records){
+			if(record.getRiskCode().startsWith("6")){//eger 6xx factoring kodu ise
+				Double facRisk = record.getShortTermRisk() + record.getMiddleTermRisk() + record.getLongTermRisk()
+						+ record.getTahakkuk() + record.getReeskont();
+				Double oldValue = (Double)facNakitRiskMap.get(record.getTerm());
+				facNakitRiskMap.put(record.getTerm(), facRisk + (oldValue==null?0:oldValue));//add this records total value to map
+			}
+		}
+		
+		ChartSeries facNakitRisk = new ChartSeries("Faktoring Nakit risk (6xx)");
+		facNakitRisk.setData(facNakitRiskMap);
+		return facNakitRisk;
+	}
+
+	/**
+	 * 
+	 * @param records
+	 * @return
+	 */
+	public static ChartSeries leaNakitRisk(List<Record> records) {
+		Map<Object, Number> leaNakitRiskMap = new TreeMap<Object, Number>(new TermComparator());
+		
+		for(Record record : records){
+			if(record.getRiskCode().startsWith("7")){//eger 7xx factoring kodu ise
+				Double leaRisk = record.getShortTermRisk() + record.getMiddleTermRisk() + record.getLongTermRisk()
+						+ record.getTahakkuk() + record.getReeskont();
+				Double oldValue = (Double)leaNakitRiskMap.get(record.getTerm());
+				leaNakitRiskMap.put(record.getTerm(), leaRisk + (oldValue==null?0:oldValue));//add this records total value to map
+			}
+		}
+		
+		ChartSeries leaNakitRisk = new ChartSeries("Leasing Nakit risk (7xx)");
+		leaNakitRisk.setData(leaNakitRiskMap);
+		return leaNakitRisk;
 	}
 }

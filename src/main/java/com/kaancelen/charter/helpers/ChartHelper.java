@@ -44,7 +44,8 @@ public class ChartHelper {
 			break;
 		case 4:
 			title = "FAKTORÝNG VE LEASÝNG RÝSK DEÐÝÞÝMÝ ";
-			barChartModel.addSeries(new ChartSeries());
+			barChartModel.addSeries(ChartSeriesCalculator.facNakitRisk(records));
+			barChartModel.addSeries(ChartSeriesCalculator.leaNakitRisk(records));
 			break;
 		case 5:
 			title = "MEMZUÇ DÖNEMLERÝNE GÖRE G.NAKÝT RÝSK DEÐÝÞÝMÝ ";
