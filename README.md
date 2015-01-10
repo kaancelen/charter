@@ -11,6 +11,8 @@
 	*Gayrinakit limit/risk değişimi
 	*Kısa, orta, uzun vade gayrinakit risk değişimi
 	
+NOT: Yüklenen dosya kesinlikle sunucu tarafında tutulmaz, uygulama kapatıldıktan sonra silinir.
+	
 Kullanılan Teknolojiler;
 	Java jdk1.7, JSF(Primefaces, Mojarra 2.1), .. diğer kütüphanelere Maven(pom.xml)'den ulaşabilirsiniz.
 Geliştirme ortamı ve araçlar,

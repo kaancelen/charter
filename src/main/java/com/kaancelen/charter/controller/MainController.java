@@ -21,6 +21,7 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.TabChangeEvent;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.util.Constants;
 
 import com.kaancelen.charter.constant.FileConstants;
 import com.kaancelen.charter.helpers.ChartHelper;
@@ -58,6 +59,7 @@ public class MainController implements Serializable{
 	@PreDestroy
 	public void destroy(){
 		System.out.println("MainController#destroy");
+		FileHelper.removeDirectory(FileConstants.ROOT_PATH);//remove all files on exit
 	}
 	/**
 	 * @param componentSystemEvent

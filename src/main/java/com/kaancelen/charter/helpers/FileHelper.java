@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.apache.commons.io.FileUtils;
+
 public class FileHelper {
 	/**
 	 * Verilen inputStream'i destinationPath dosyasýna kaydeder.
@@ -48,6 +50,19 @@ public class FileHelper {
 	public static boolean removeFile(String filename){
 		File file = new File(filename);
 		return (file.delete()?true:false);
+	}
+	/**
+	 * remove given directory path
+	 * @return
+	 */
+	public static boolean removeDirectory(String directory){
+		try {
+			FileUtils.deleteDirectory(new File(directory));
+			return true;
+		} catch (IOException e) {
+			System.err.println(e.getLocalizedMessage());
+			return false;
+		}
 	}
 	
 	/**
