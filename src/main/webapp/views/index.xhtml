@@ -88,46 +88,44 @@
       	</p:dialog>
       	<!-- Charts dialog -->
       	<p:dialog widgetVar="chartDlg" modal="true" appendTo="@(body)" resizable="false" draggable="false" header="Grafikler"
-      			height="800px" width="80%">
+      			height="80%" width="80%">
       		<h:form id="chartDlgForm">
-      			<p:tabView>
+      			<p:tabView style="width:99%">
       				<p:ajax event="tabChange" listener="#{mainController.onTabChange}" update=":chartDlgForm:termDataTable"/>
       				<p:tab title="1">
-      					<p:chart type="bar" model="#{mainController.nakitRisk}" style="height:500px;width:800px;"/>
+      					<p:chart type="bar" model="#{mainController.nakitRisk}" style="height:50%"/>
       				</p:tab>
       				<p:tab title="2">
-      					<p:chart type="bar" model="#{mainController.limitRisk}" style="height:500px;width:800px;"/>
+      					<p:chart type="bar" model="#{mainController.limitRisk}" style="height:50%"/>
       				</p:tab>
       				<p:tab title="3">
-      					<p:chart type="bar" model="#{mainController.termNakitRisk}" style="height:500px;width:800px;"/>
+      					<p:chart type="bar" model="#{mainController.termNakitRisk}" style="height:50%"/>
       				</p:tab>
       				<p:tab title="4">
-      					<p:chart type="bar" model="#{mainController.facLeaRisk}" style="height:500px;width:800px;"/>
+      					<p:chart type="bar" model="#{mainController.facLeaRisk}" style="height:50%"/>
       				</p:tab>
       				<p:tab title="5">
-      					<p:chart type="bar" model="#{mainController.gnakitRisk}" style="height:500px;width:800px;"/>
+      					<p:chart type="bar" model="#{mainController.gnakitRisk}" style="height:50%"/>
       				</p:tab>
       				<p:tab title="6">
-      					<p:chart type="bar" model="#{mainController.glimitRisk}" style="height:500px;width:800px;"/>
+      					<p:chart type="bar" model="#{mainController.glimitRisk}" style="height:50%"/>
       				</p:tab>
       				<p:tab title="7">
-      					<p:chart type="bar" model="#{mainController.termGnakitRisk}" style="height:500px;width:800px;"/>
+      					<p:chart type="bar" model="#{mainController.termGnakitRisk}" style="height:50%"/>
       				</p:tab>
       			</p:tabView>
       			<p:dataTable id="termDataTable" emptyMessage="Data yok!" value="#{mainController.tableData}" var="data"
-      				style="width:100%;" resizableColumns="true">
+      				style="width:99%" resizableColumns="true" rowIndexVar="index">
       				<p:column headerText="Tip">
-      					<p:outputLabel value="Deneme"/>
+      					<p:outputLabel value="#{index+1}"/>
       				</p:column>
       				<p:columns value="#{mainController.terms}" var="term">
       					<f:facet name="header">
       						<p:outputLabel value="#{term}"/>
       					</f:facet>
-      					<div style="width:50%">
-      						<p:outputLabel value="#{data.get(term)}">
-	      						<f:convertNumber pattern=""/>
-	      					</p:outputLabel>
-      					</div>
+     					<p:outputLabel value="#{data.get(term)}" style="font-size:11px">
+     						<f:convertNumber pattern=""/>
+     					</p:outputLabel>
       				</p:columns>
       			</p:dataTable>
       		</h:form>
