@@ -138,6 +138,10 @@ public class MainController implements Serializable{
 	 */
 	public void onTabChange(TabChangeEvent event){
 		System.out.println("MainController#onTabChange "+event.getTab().getTitle());
+		if(event.getTab().getId().compareTo("exportOutside") == 0){
+			activeTab = 8;
+			return;
+		}
 		activeTab = Integer.parseInt(event.getTab().getTitle());
 	}
 	/**

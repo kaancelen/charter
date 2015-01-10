@@ -117,12 +117,12 @@
       				<p:tab title="7">
       					<p:chart type="bar" model="#{mainController.termGnakitRisk}" style="height:50%"/>
       				</p:tab>
-      				<p:tab title="Dışa Aktar">
+      				<p:tab title="Dışa Aktar" id="exportOutside">
       					<p:outputLabel value="TODO"/>
       				</p:tab>
       			</p:tabView>
       			<p:dataTable id="termDataTable" emptyMessage="Data yok!" value="#{mainController.tableData}" var="data"
-      				style="width:99%" resizableColumns="true" rowIndexVar="index">
+      				style="width:99%" resizableColumns="true" rowIndexVar="index" rendered="#{!(mainController.activeTab == 8)}">
       				<p:column headerText="Tip" style="font-size:12px">
       					<p:panelGrid rendered="#{mainController.activeTab == 1 or mainController.activeTab == 5}">
       						<p:outputLabel value="TCMB" rendered="#{index == 0}"/>
