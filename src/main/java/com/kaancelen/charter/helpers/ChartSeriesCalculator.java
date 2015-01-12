@@ -3,9 +3,11 @@ package com.kaancelen.charter.helpers;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
 
 import com.kaancelen.charter.comparators.TermComparator;
@@ -233,5 +235,21 @@ public class ChartSeriesCalculator {
 		ChartSeries leaNakitRisk = new ChartSeries("Leasing Nakit risk (7xx)");
 		leaNakitRisk.setData(leaNakitRiskMap);
 		return leaNakitRisk;
+	}
+	
+	/**
+	 * create usage percantage map for given share and denom maps,
+	 * Create share/denom map
+	 * @param share
+	 * @param denom
+	 * @return
+	 */
+	public static Map<Object, Number> usePercantage(Map<Object, Number> share, Map<Object, Number> denom){
+		Map<Object, Number> percantage = new TreeMap<Object, Number>(new TermComparator());
+		for (Entry<Object, Number> entry : share.entrySet()){
+			percantage.put(entry.getKey(), (entry.getValue().doubleValue()/denom.get(entry.getKey()).doubleValue()));
+		}
+		
+		return percantage;
 	}
 }

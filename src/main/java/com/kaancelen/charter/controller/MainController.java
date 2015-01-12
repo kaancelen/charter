@@ -25,6 +25,7 @@ import org.primefaces.util.Constants;
 
 import com.kaancelen.charter.constant.FileConstants;
 import com.kaancelen.charter.helpers.ChartHelper;
+import com.kaancelen.charter.helpers.ChartSeriesCalculator;
 import com.kaancelen.charter.helpers.DocumentHelper;
 import com.kaancelen.charter.helpers.FileHelper;
 import com.kaancelen.charter.models.Consolidated;
@@ -138,10 +139,6 @@ public class MainController implements Serializable{
 	 */
 	public void onTabChange(TabChangeEvent event){
 		System.out.println("MainController#onTabChange "+event.getTab().getTitle());
-		if(event.getTab().getId().compareTo("exportOutside") == 0){
-			activeTab = 8;
-			return;
-		}
 		activeTab = Integer.parseInt(event.getTab().getTitle());
 	}
 	/**
@@ -157,6 +154,7 @@ public class MainController implements Serializable{
 			for (ChartSeries seri : limitRisk.getSeries()) {
 				tableData.add(seri.getData());
 			}
+			tableData.add(ChartSeriesCalculator.usePercantage(tableData.get(1), tableData.get(0)));
 		}if(activeTab == 3){
 			for (ChartSeries seri : termNakitRisk.getSeries()) {
 				tableData.add(seri.getData());
@@ -173,6 +171,7 @@ public class MainController implements Serializable{
 			for (ChartSeries seri : glimitRisk.getSeries()) {
 				tableData.add(seri.getData());
 			}
+			tableData.add(ChartSeriesCalculator.usePercantage(tableData.get(1), tableData.get(0)));
 		}if(activeTab == 7){
 			for (ChartSeries seri : termGnakitRisk.getSeries()) {
 				tableData.add(seri.getData());

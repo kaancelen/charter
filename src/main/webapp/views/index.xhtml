@@ -117,41 +117,41 @@
       				<p:tab title="7">
       					<p:chart type="bar" model="#{mainController.termGnakitRisk}" style="height:50%"/>
       				</p:tab>
-      				<p:tab title="Dışa Aktar" id="exportOutside">
-      					<p:outputLabel value="TODO"/>
-      				</p:tab>
       			</p:tabView>
-      			<p:dataTable id="termDataTable" emptyMessage="Data yok!" value="#{mainController.tableData}" var="data"
-      				style="width:99%" resizableColumns="true" rowIndexVar="index" rendered="#{!(mainController.activeTab == 8)}">
-      				<p:column headerText="Tip" style="font-size:12px">
-      					<p:panelGrid rendered="#{mainController.activeTab == 1 or mainController.activeTab == 5}">
-      						<p:outputLabel value="TCMB" rendered="#{index == 0}"/>
-      						<p:outputLabel value="Şekerbank" rendered="#{index == 1}"/>
-      						<p:outputLabel value="250-251 R.Kodu" rendered="#{index == 2}"/>
-      					</p:panelGrid>
-      					<p:panelGrid rendered="#{mainController.activeTab == 2 or mainController.activeTab == 6}">
-      						<p:outputLabel value="Toplam Limit" rendered="#{index == 0}"/>
-      						<p:outputLabel value="Toplam Risk" rendered="#{index == 1}"/>
-      					</p:panelGrid>
-      					<p:panelGrid rendered="#{mainController.activeTab == 3 or mainController.activeTab == 7}">
-      						<p:outputLabel value="0-12 vade" rendered="#{index == 0}"/>
-      						<p:outputLabel value="12-24 vade" rendered="#{index == 1}"/>
-      						<p:outputLabel value="24+ vade" rendered="#{index == 2}"/>
-      					</p:panelGrid>
-      					<p:panelGrid rendered="#{mainController.activeTab == 4}">
-      						<p:outputLabel value="Factory" rendered="#{index == 0}"/>
-      						<p:outputLabel value="Leasing" rendered="#{index == 1}"/>
-      					</p:panelGrid>
-      				</p:column>
-      				<p:columns value="#{mainController.terms}" var="term">
-      					<f:facet name="header">
-      						<p:outputLabel value="#{term}"/>
-      					</f:facet>
-     					<p:outputLabel value="#{data.get(term)}" style="font-size:12px">
-     						<f:convertNumber pattern=""/>
-     					</p:outputLabel>
-      				</p:columns>
-      			</p:dataTable>
+      			<!-- DataTable -->
+	     		<p:dataTable id="termDataTable" emptyMessage="Data yok!" value="#{mainController.tableData}" var="data"
+	  				style="width:99%" resizableColumns="true" rowIndexVar="index">
+	  				<p:column headerText="Tip" style="font-size:12px">
+	  					<p:panelGrid rendered="#{mainController.activeTab == 1 or mainController.activeTab == 5}">
+	  						<p:outputLabel value="TCMB" rendered="#{index == 0}"/>
+	  						<p:outputLabel value="Şekerbank" rendered="#{index == 1}"/>
+	  						<p:outputLabel value="250-251 R.Kodu" rendered="#{index == 2}"/>
+	  					</p:panelGrid>
+	  					<p:panelGrid rendered="#{mainController.activeTab == 2 or mainController.activeTab == 6}">
+	  						<p:outputLabel value="Toplam Limit" rendered="#{index == 0}"/>
+	  						<p:outputLabel value="Toplam Risk" rendered="#{index == 1}"/>
+	  						<p:outputLabel value="Kullanım Oranı" rendered="#{index == 2}"/>
+	  					</p:panelGrid>
+	  					<p:panelGrid rendered="#{mainController.activeTab == 3 or mainController.activeTab == 7}">
+	  						<p:outputLabel value="0-12 vade" rendered="#{index == 0}"/>
+	  						<p:outputLabel value="12-24 vade" rendered="#{index == 1}"/>
+	  						<p:outputLabel value="24+ vade" rendered="#{index == 2}"/>
+	  					</p:panelGrid>
+	  					<p:panelGrid rendered="#{mainController.activeTab == 4}">
+	  						<p:outputLabel value="Factory" rendered="#{index == 0}"/>
+	  						<p:outputLabel value="Leasing" rendered="#{index == 1}"/>
+	  					</p:panelGrid>
+	  				</p:column>
+	  				<p:columns value="#{mainController.terms}" var="term">
+	  					<f:facet name="header">
+	  						<p:outputLabel value="#{term}"/>
+	  					</f:facet>
+	  					<p:outputLabel value="%" rendered="#{(index == 2) and (mainController.activeTab == 2 or mainController.activeTab == 6)}"/>
+	 					<p:outputLabel value="#{data.get(term)}" style="font-size:12px">
+	 						<f:convertNumber pattern="" maxFractionDigits="2"/>
+	 					</p:outputLabel>
+	  				</p:columns>
+	  			</p:dataTable>
       		</h:form>
       	</p:dialog>
 		<f:metadata>

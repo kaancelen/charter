@@ -1,0 +1,50 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+      
+      <ui:composition>
+		<!--       Charts -->
+      		<p:chart type="bar" model="#{mainController.nakitRisk}" rendered="#{tabId == 1}" style="height:50%"/>
+    		<p:chart type="bar" model="#{mainController.limitRisk}" rendered="#{tabId == 2}" style="height:50%"/>
+    		<p:chart type="bar" model="#{mainController.termNakitRisk}" rendered="#{tabId == 3}" style="height:50%"/>
+    		<p:chart type="bar" model="#{mainController.facLeaRisk}" rendered="#{tabId == 4}" style="height:50%"/>
+    		<p:chart type="bar" model="#{mainController.gnakitRisk}" rendered="#{tabId == 5}" style="height:50%"/>
+    		<p:chart type="bar" model="#{mainController.glimitRisk}" rendered="#{tabId == 6}" style="height:50%"/>
+    		<p:chart type="bar" model="#{mainController.termGnakitRisk}" rendered="#{tabId == 7}" style="height:50%"/>
+    	<!-- DataTable -->
+     		<p:dataTable emptyMessage="Data yok!" value="#{mainController.tableData}" var="data"
+  				style="width:99%" resizableColumns="true" rowIndexVar="index">
+  				<p:column headerText="Tip" style="font-size:12px">
+  					<p:panelGrid rendered="#{tabId == 1 or tabId == 5}">
+  						<p:outputLabel value="TCMB" rendered="#{index == 0}"/>
+  						<p:outputLabel value="Şekerbank" rendered="#{index == 1}"/>
+  						<p:outputLabel value="250-251 R.Kodu" rendered="#{index == 2}"/>
+  					</p:panelGrid>
+  					<p:panelGrid rendered="#{tabId == 2 or tabId == 6}">
+  						<p:outputLabel value="Toplam Limit" rendered="#{index == 0}"/>
+  						<p:outputLabel value="Toplam Risk" rendered="#{index == 1}"/>
+  						<p:outputLabel value="Kullanım Oranı" rendered="#{index = 2}"/>
+  					</p:panelGrid>
+  					<p:panelGrid rendered="#{tabId == 3 or tabId == 7}">
+  						<p:outputLabel value="0-12 vade" rendered="#{index == 0}"/>
+  						<p:outputLabel value="12-24 vade" rendered="#{index == 1}"/>
+  						<p:outputLabel value="24+ vade" rendered="#{index == 2}"/>
+  					</p:panelGrid>
+  					<p:panelGrid rendered="#{tabId == 4}">
+  						<p:outputLabel value="Factory" rendered="#{index == 0}"/>
+  						<p:outputLabel value="Leasing" rendered="#{index == 1}"/>
+  					</p:panelGrid>
+  				</p:column>
+  				<p:columns value="#{mainController.terms}" var="term">
+  					<f:facet name="header">
+  						<p:outputLabel value="#{term}"/>
+  					</f:facet>
+ 					<p:outputLabel value="#{data.get(term)}" style="font-size:12px">
+ 						<f:convertNumber pattern=""/>
+ 					</p:outputLabel>
+  				</p:columns>
+  			</p:dataTable>
+      </ui:composition>
+</html>
