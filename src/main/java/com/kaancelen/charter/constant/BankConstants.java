@@ -14,4 +14,8 @@ public class BankConstants {
 	public static final String[] ntytm = {"201", "251"};
 	
 	public static final String sekerbankCode = "0059";
+	
+	public static final String memzu = "memzu";
+	public static final String olumlu = "olumlu";
+	public static final String olumsuz = "olumsuz";
 }

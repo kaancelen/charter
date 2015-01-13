@@ -1,0 +1,100 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/template/main.xhtml">  
+
+	<ui:define name="menuitem">
+		<h:form id="performanceForm">
+			<p:dataTable id="performanceTable" widgetVar="performanceTable" emptyMessage="Hiç kayıt bulunmamaktadır."
+				resizableColumns="false" style="text-align:center" paginator="true" rows="20" styleClass="paginated" 
+				paginatorPosition="top" paginatorAlwaysVisible="false" rowsPerPageTemplate="20,50,100" 
+				value="#{performanceController.performance.jobRecords}" var="record">
+			
+				<f:facet name="header">
+					<div align="left">
+						<p:commandButton value="Dosya Yukle" icon="ui-icon-arrowthickstop-1-n" oncomplete="PF('uploadPerfFile').show()"/> <!-- update="::uploadPerfFileForm" bu ajax update ibaresini koyunca file upload calismiyor!! -->
+			      		<p:outputLabel value="Yüklü dosya : #{performanceController.performance.filename}, Yüklenme tarihi : " style="margin-left:20px;"/>
+			      		<p:outputLabel value="#{performanceController.performance.uploadedDate}" style="margin-left:10px;">
+			      			<f:convertDateTime pattern="dd/MM/yy HH:mm"/>
+			      		</p:outputLabel>
+			      		<p:commandButton icon="ui-icon-person" value="Çizdir" action="#{performanceController.drawCharts}" update=":performanceChartDlgForm" oncomplete="PF('performanceChartDlg').show()"
+			      			disabled="#{empty performanceController.performance.filepath}" style="margin-left:20px;"/>
+					</div>
+				</f:facet>
+				
+				<p:column headerText="Çalışan" style="width:10%" filterBy="#{record.personel}" filterMatchMode="contains">
+					<p:outputLabel value="#{record.personel}"/>
+				</p:column>
+				<p:column headerText="Firma" style="width:10%" filterBy="#{record.firm}" filterMatchMode="contains">
+					<p:outputLabel value="#{record.firm}"/>
+				</p:column>
+				<p:column headerText="Grup" style="width:10%" filterBy="#{record.group}" filterMatchMode="contains">
+					<p:outputLabel value="#{record.group}"/>
+				</p:column>
+				<p:column headerText="Teklif Limit" style="width:10%">
+					<p:outputLabel value="#{record.offerLimit}">
+						<f:convertNumber pattern=""/>
+					</p:outputLabel>
+				</p:column>
+				<p:column headerText="Segment" style="width:10%" filterBy="#{record.segment}" filterMatchMode="contains">
+					<p:outputLabel value="#{record.segment}"/>
+				</p:column>
+				<p:column headerText="Şube" style="width:10%" filterBy="#{record.branch}" filterMatchMode="contains">
+					<p:outputLabel value="#{record.branch}"/>
+				</p:column>
+				<p:column headerText="Talep Eden" style="width:10%" filterBy="#{record.requester}" filterMatchMode="contains">
+					<p:outputLabel value="#{record.requester}"/>
+				</p:column>
+				<p:column headerText="Gün Farkı" style="width:10%">
+					<p:outputLabel value="#{record.dayDiff}"/>
+				</p:column>
+				<p:column headerText="Açıklama" style="width:20%" filterBy="#{record.desc}" filterMatchMode="contains">
+					<p:outputLabel value="#{record.desc}"/>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+		<!-- DIALOGSS -->
+		<!-- File upload dialog -->
+		<p:dialog widgetVar="uploadPerfFile" modal="true" appendTo="@(body)" resizable="false" draggable="false" header="Dosya yükle">
+      		<h:form id="uploadPerfFileForm">
+      			<p:messages id="messages" autoUpdate="true"/>
+      			<h:panelGrid columns="1" style="text-align:center">
+      				<p:outputLabel value="Önce dosyayı seçin daha sonra yükle butonu ile yükleyin." style="color:blue;"/>
+      				<p:outputLabel value="İzinli dosya uzantıları : (xls/x)" style="color:red;"/>
+      				<p:outputLabel value="Max. dosya boyutu 5mb" style="color:red;"/>
+      				<p:fileUpload id="PerfFileUpload" mode="advanced" sizeLimit="5000000" allowTypes="/(\.|\/)(xls|xlsx)$/"
+      					fileUploadListener="#{performanceController.onUploadFile}"	update=":performanceForm" required="true" requiredMessage="Dosya yüklemek zorunludur!"/>
+      			</h:panelGrid>
+      			<br/><br/>
+      			<p:commandButton value="Tamamla" icon="ui-icon-check" update=":performanceForm"
+      				action="#{performanceController.onCompleteFileUpload}"/>
+      		</h:form>
+      	</p:dialog>
+      	<!-- Performans dialog -->
+      	<p:dialog widgetVar="performanceChartDlg" modal="true" appendTo="@(body)" resizable="false" draggable="false" header="Grafikler"
+      			height="80%" width="80%" maximizable="true">
+      		<h:form id="performanceChartDlgForm">
+      			<p:tabView style="width:99%">
+      				<p:ajax event="tabChange" listener="#{performanceController.onTabChange}" update="personelTable departmentTable"/>
+      				<p:tab title="1">
+      					<p:chart type="bar" model="#{performanceController.personelChart}" style="height:50%"/>
+      					<p:dataTable id="personelTable">
+      					
+      					</p:dataTable>
+      				</p:tab>
+      				<p:tab title="2">
+      					<p:chart seriesColor="00FF00, FFFF00, FF0000, FF00FF" type="bar" model="#{performanceController.departmentChart}" style="height:50%"/>
+      					<p:dataTable id="departmentTable">
+      					
+      					</p:dataTable>
+      				</p:tab>
+      			</p:tabView>
+      		</h:form>
+    	</p:dialog>
+		<f:metadata>
+			<f:event listener="#{performanceController.onPageLoad}" type="preRenderView"/>
+		</f:metadata>
+	</ui:define>
+</ui:composition>

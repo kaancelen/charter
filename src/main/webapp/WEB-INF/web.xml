@@ -10,7 +10,7 @@
   
   	<!-- Welcome page -->
 	<welcome-file-list>
-		<welcome-file>/views/index.xhtml</welcome-file>
+		<welcome-file>/views/performance.xhtml</welcome-file>
 	</welcome-file-list>
   
   	<!-- Change to "Production" when you are ready to deploy -->

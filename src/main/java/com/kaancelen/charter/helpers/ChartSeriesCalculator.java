@@ -1,5 +1,6 @@
 package com.kaancelen.charter.helpers;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -10,8 +11,11 @@ import java.util.TreeMap;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
 
+import com.kaancelen.charter.comparators.LabelComparator;
 import com.kaancelen.charter.comparators.TermComparator;
 import com.kaancelen.charter.constant.BankConstants;
+import com.kaancelen.charter.constant.ChartConstants;
+import com.kaancelen.charter.models.JobRecord;
 import com.kaancelen.charter.models.Record;
 
 /**
@@ -251,5 +255,127 @@ public class ChartSeriesCalculator {
 		}
 		
 		return percantage;
+	}
+
+	/**
+	 * @param jobRecords
+	 * @return
+	 */
+	public static ChartSeries PersonelReport(List<JobRecord> jobRecords) {
+		Map<Object, Number> personelReportMap = new HashMap<Object, Number>();
+		
+		for (JobRecord jobRecord : jobRecords) {
+			//if not empty it is olumlu or olumsuz
+			if(jobRecord.getResult() != null && jobRecord.getResult().compareTo("") != 0){
+				//if there are no records before it should be '0'
+				Integer oldValue = (Integer) personelReportMap.get(jobRecord.getPersonel());
+				personelReportMap.put(jobRecord.getPersonel(), 1 + (oldValue==null?0:oldValue));//increase counter 1 for this personel
+			}
+		}
+		
+		ChartSeries chartSeries = new ChartSeries("Rapor Sayýsý");
+		chartSeries.setData(personelReportMap);
+		return chartSeries;
+	}
+
+	/**
+	 * @param jobRecords
+	 * @return
+	 */
+	public static ChartSeries PersonelMemzuc(List<JobRecord> jobRecords) {
+		Map<Object, Number> personelMemzucMap = new HashMap<Object, Number>();
+		
+		for (JobRecord jobRecord : jobRecords) {
+			//if desc contains 'memzu' then it is memzu record
+			if(jobRecord.getDesc()!=null && jobRecord.getDesc().contains(BankConstants.memzu)){
+				//if there are no records before it should be '0'
+				Integer oldValue = (Integer) personelMemzucMap.get(jobRecord.getPersonel());
+				personelMemzucMap.put(jobRecord.getPersonel(), 1 + (oldValue==null?0:oldValue));//increase counter 1 for this personel
+			}
+		}
+		
+		ChartSeries chartSeries = new ChartSeries("Memzuç Sayýsý");
+		chartSeries.setData(personelMemzucMap);
+		return chartSeries;
+	}
+//	/**
+//	 * @param jobRecords
+//	 * @param type 1=> toplam, olumlu, memzuc, 2=> olumsuz
+//	 * @return
+//	 */
+//	public static ChartSeries DepartmentReport(List<JobRecord> jobRecords) {
+//		Map<Object, Number> departmentMap = new HashMap<Object, Number>();
+//		departmentMap.put(ChartConstants.DEPARTMENT_LABELS[0], 0);//toplam
+//		departmentMap.put(ChartConstants.DEPARTMENT_LABELS[1], 0);//rapor
+//		departmentMap.put(ChartConstants.DEPARTMENT_LABELS[2], 0);//olumlu
+//		departmentMap.put(ChartConstants.DEPARTMENT_LABELS[3], 0);//olumsuz
+//		departmentMap.put(ChartConstants.DEPARTMENT_LABELS[4], 0);//memzuç
+//		
+//		for (JobRecord jobRecord : jobRecords) {
+//			//Toplam
+//			departmentMap.put(ChartConstants.DEPARTMENT_LABELS[0], 1 + (Integer)departmentMap.get(ChartConstants.DEPARTMENT_LABELS[0]));
+//			//Memzuç
+//			if(jobRecord.getDesc()!=null && jobRecord.getDesc().contains(BankConstants.memzu)){
+//				departmentMap.put(ChartConstants.DEPARTMENT_LABELS[4], 1 + (Integer)departmentMap.get(ChartConstants.DEPARTMENT_LABELS[4]));
+//			}else {
+//				//Rapor
+//				if(jobRecord.getResult() != null && jobRecord.getResult().compareTo("") != 0){
+//					departmentMap.put(ChartConstants.DEPARTMENT_LABELS[1], 1 + (Integer)departmentMap.get(ChartConstants.DEPARTMENT_LABELS[1]));
+//				}
+//				//olumlu
+//				if(jobRecord.getResult() != null && jobRecord.getResult().compareTo("") != 0 && !jobRecord.getResult().contains(BankConstants.olumsuz)){
+//					departmentMap.put(ChartConstants.DEPARTMENT_LABELS[2], 1 + (Integer)departmentMap.get(ChartConstants.DEPARTMENT_LABELS[2]));
+//				}
+//				//olumsuz
+//				if(jobRecord.getResult() != null && jobRecord.getResult().compareTo("") != 0 && jobRecord.getResult().contains(BankConstants.olumsuz)){
+//					departmentMap.put(ChartConstants.DEPARTMENT_LABELS[3], 1 + (Integer)departmentMap.get(ChartConstants.DEPARTMENT_LABELS[3]));
+//				}
+//			}
+//		}
+//		
+//		ChartSeries chartSeries = new ChartSeries();
+//		chartSeries.setData(departmentMap);
+//		return chartSeries;
+//	}
+
+	public static ChartSeries DepartmentReport(List<JobRecord> jobRecords, int type) {
+		Map<Object, Number> departmentMap = new TreeMap<Object, Number>(new LabelComparator());
+		departmentMap.put(ChartConstants.DEPARTMENT_LABELS[0], 0);//toplam
+		departmentMap.put(ChartConstants.DEPARTMENT_LABELS[1], 0);//rapor
+		departmentMap.put(ChartConstants.DEPARTMENT_LABELS[2], 0);//olumlu
+		departmentMap.put(ChartConstants.DEPARTMENT_LABELS[3], 0);//olumsuz
+		departmentMap.put(ChartConstants.DEPARTMENT_LABELS[4], 0);//memzuç
+		
+		for (JobRecord jobRecord : jobRecords) {
+			switch (type) {
+			case 1:
+				//Toplam
+				departmentMap.put(ChartConstants.DEPARTMENT_LABELS[0], 1 + (Integer)departmentMap.get(ChartConstants.DEPARTMENT_LABELS[0]));
+				break;
+			case 2:
+				//Rapor
+				if(jobRecord.getResult() != null && jobRecord.getResult().compareTo("") != 0){
+					departmentMap.put(ChartConstants.DEPARTMENT_LABELS[1], 1 + (Integer)departmentMap.get(ChartConstants.DEPARTMENT_LABELS[1]));
+				}
+				//olumlu
+				if(jobRecord.getResult() != null && jobRecord.getResult().compareTo("") != 0 && !jobRecord.getResult().contains(BankConstants.olumsuz)){
+					departmentMap.put(ChartConstants.DEPARTMENT_LABELS[2], 1 + (Integer)departmentMap.get(ChartConstants.DEPARTMENT_LABELS[2]));
+				}
+				//olumsuz
+				if(jobRecord.getResult() != null && jobRecord.getResult().compareTo("") != 0 && jobRecord.getResult().contains(BankConstants.olumsuz)){
+					departmentMap.put(ChartConstants.DEPARTMENT_LABELS[3], 1 + (Integer)departmentMap.get(ChartConstants.DEPARTMENT_LABELS[3]));
+				}
+				break;
+			case 3:
+				if(jobRecord.getDesc()!=null && jobRecord.getDesc().contains(BankConstants.memzu)){
+					departmentMap.put(ChartConstants.DEPARTMENT_LABELS[4], 1 + (Integer)departmentMap.get(ChartConstants.DEPARTMENT_LABELS[4]));
+				}
+				break;
+			}
+		}
+		
+		ChartSeries chartSeries = new ChartSeries();
+		chartSeries.setData(departmentMap);
+		return chartSeries;
 	}
 }

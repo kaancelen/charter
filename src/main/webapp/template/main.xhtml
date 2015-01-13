@@ -10,6 +10,12 @@
       
     <h:body>  
 		<p:growl id="growl_message" showDetail="true" globalOnly="true" autoUpdate="true"/>
+		<h:form id="menubarForm">
+			<p:menubar>
+				<p:menuitem icon="ui-icon-copy" value="Memzuç" url="/views/index.jsf"/>
+				<p:menuitem icon="ui-icon-star" value="Performans" url="/views/performance.jsf"/>
+			</p:menubar>
+		</h:form>
 		<ui:insert name="menuitem"/>
     </h:body>  
 </html> 

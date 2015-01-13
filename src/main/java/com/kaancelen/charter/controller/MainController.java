@@ -21,7 +21,6 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.TabChangeEvent;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
-import org.primefaces.util.Constants;
 
 import com.kaancelen.charter.constant.FileConstants;
 import com.kaancelen.charter.helpers.ChartHelper;
@@ -116,7 +115,7 @@ public class MainController implements Serializable{
 		if(isChartsDrow){//eger chartlar zaten cizilmisse tekrar cizmene gerek yok
 			return;
 		}
-		System.out.println("MainController#onCompleteFileUpload");
+		System.out.println("MainController#drawCharts");
 		nakitRisk = ChartHelper.draw(consolidated.getRecords(), 1, consolidated.getFirmName());
 		limitRisk = ChartHelper.draw(consolidated.getRecords(), 2, consolidated.getFirmName());
 		termNakitRisk = ChartHelper.draw(consolidated.getRecords(), 3, consolidated.getFirmName());
