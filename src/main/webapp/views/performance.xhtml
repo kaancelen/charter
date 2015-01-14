@@ -76,21 +76,46 @@
       	<p:dialog widgetVar="performanceChartDlg" modal="true" appendTo="@(body)" resizable="false" draggable="false" header="Grafikler"
       			height="80%" width="80%" maximizable="true">
       		<h:form id="performanceChartDlgForm">
-      			<p:tabView style="width:99%">
-      				<p:ajax event="tabChange" listener="#{performanceController.onTabChange}" update="personelTable departmentTable"/>
-      				<p:tab title="1">
-      					<p:chart type="bar" model="#{performanceController.personelChart}" style="height:50%"/>
-      					<p:dataTable id="personelTable">
+      			<div align="left">
+      				<p:commandButton value="İndir" icon="ui-icon-arrowthickstop-1-s" ajax="false" 
+      					action="#{performanceController.exportFilesToServer}" onclick="exportCharts()">
+      				</p:commandButton>
+      				
+      				<h:inputHidden id="performanceHidden" value="#{performanceController.performanceHidden}"/>
+      				<h:inputHidden id="departmentHidden" value="#{performanceController.departmentHidden}"/>
+      			</div>
+      			<br/><br/>
       					
-      					</p:dataTable>
-      				</p:tab>
-      				<p:tab title="2">
-      					<p:chart seriesColor="00FF00, FFFF00, FF0000, FF00FF" type="bar" model="#{performanceController.departmentChart}" style="height:50%"/>
-      					<p:dataTable id="departmentTable">
-      					
-      					</p:dataTable>
-      				</p:tab>
-      			</p:tabView>
+				<p:chart widgetVar="personelChart" type="bar" model="#{performanceController.personelChart}" style="height:50%"/>
+				
+				<p:dataTable id="personelTable" value="#{performanceController.personelData}" var="data"
+					style="width:99%" resizableColumns="true" rowIndexVar="index">
+				
+					<p:column headerText="Tip" style="font-size:12px">
+						<p:outputLabel value="Rapor" rendered="#{index == 0}"/>
+						<p:outputLabel value="Memzuç" rendered="#{index == 1}"/>
+						<p:outputLabel value="Toplam" rendered="#{index == 2}"/>
+					</p:column>
+					<p:columns value="#{performanceController.performance.personels}" var="personel" style="font-size:12px">
+						<f:facet name="header">
+							<p:outputLabel value="#{personel}"/>
+						</f:facet>
+						<p:outputLabel value="#{data.get(personel)}"/>
+					</p:columns>
+				</p:dataTable>
+				
+				<p:chart widgetVar="departmentChart" type="bar" model="#{performanceController.departmentChart}" style="height:50%"/>
+			
+				<p:dataTable id="departmentTable" value="#{performanceController.departmentData}" var="data"
+					style="width:99%" resizableColumns="true" rowIndexVar="index">
+					
+					<p:columns value="#{performanceController.departmentColumns}" var="label" style="font-size:12px">
+						<f:facet name="header">
+							<p:outputLabel value="#{label}"/>
+						</f:facet>
+						<p:outputLabel value="#{data.get(label)}"/>
+					</p:columns>
+				</p:dataTable>
       		</h:form>
     	</p:dialog>
 		<f:metadata>
