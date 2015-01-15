@@ -21,6 +21,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.kaancelen.charter.comparators.TermComparator;
 import com.kaancelen.charter.models.JobRecord;
 import com.kaancelen.charter.models.Record;
+import com.kaancelen.charter.utils.StringUtil;
 
 public class DocumentHelper {
 	
@@ -136,7 +137,7 @@ public class DocumentHelper {
 					Cell cell = cellIterator.next();
 					try{
 						switch (cellIndex) {
-							case 0: record.setPersonel(cell.getStringCellValue().toLowerCase()); break;
+							case 0: record.setPersonel(StringUtil.replaceTurkishChars(cell.getStringCellValue().split(" ")[0]).toUpperCase()); break;//too risky!!!
 							case 1: record.setFirm(cell.getStringCellValue()); break;
 							case 2: record.setGroup(cell.getStringCellValue()); break;
 							case 3: record.setOfferLimit(cell.getNumericCellValue()); break;

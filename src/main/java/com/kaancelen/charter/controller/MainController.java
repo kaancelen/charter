@@ -1,9 +1,16 @@
 package com.kaancelen.charter.controller;
 
+import java.awt.image.RenderedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -16,9 +23,13 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.event.ComponentSystemEvent;
+import javax.imageio.ImageIO;
 
+import org.apache.commons.codec.binary.Base64;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.TabChangeEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
 
@@ -27,6 +38,7 @@ import com.kaancelen.charter.helpers.ChartHelper;
 import com.kaancelen.charter.helpers.ChartSeriesCalculator;
 import com.kaancelen.charter.helpers.DocumentHelper;
 import com.kaancelen.charter.helpers.FileHelper;
+import com.kaancelen.charter.helpers.PDFHelper;
 import com.kaancelen.charter.models.Consolidated;
 import com.kaancelen.charter.models.Record;
 import com.kaancelen.charter.utils.PrimefacesUtils;
@@ -48,6 +60,8 @@ public class MainController implements Serializable{
 	private BarChartModel gnakitRisk;
 	private BarChartModel glimitRisk;
 	private BarChartModel termGnakitRisk;
+	private String[] hiddenInputs;
+	private boolean isReportReady;
 	
 	@PostConstruct
 	public void init(){
@@ -84,6 +98,7 @@ public class MainController implements Serializable{
 			if(FileHelper.copyFile(consolidated.getFilepath(), event.getFile().getInputstream())){
 				PrimefacesUtils.showMessage(FacesMessage.SEVERITY_INFO, "Dosya baþarý ile yüklendi!", consolidated.getFilename());
 				isChartsDrow = false;//Yeni dosya yuklendi
+				isReportReady = false;
 			}else{
 				PrimefacesUtils.showMessage(FacesMessage.SEVERITY_ERROR, "Dosya yüklemesi baþarýsýz!", consolidated.getFilename());
 			}
@@ -178,6 +193,58 @@ public class MainController implements Serializable{
 		}
 		return tableData;
 	}
+	/**
+	 * create and return file content
+	 * @return
+	 */
+	public StreamedContent getFile(){
+		try {
+			//get datas
+			List<List<Map<Object, Number>>> datas = new ArrayList<List<Map<Object, Number>>>();
+			activeTab = 1;
+			datas.add(getTableData());
+			activeTab = 2;
+			datas.add(getTableData());
+			activeTab = 3;
+			datas.add(getTableData());
+			activeTab = 4;
+			datas.add(getTableData());
+			activeTab = 5;
+			datas.add(getTableData());
+			activeTab = 6;
+			datas.add(getTableData());
+			activeTab = 7;
+			datas.add(getTableData());
+			activeTab = 8;
+			//Create file
+			PDFHelper.createMemzucReport(datas);
+			//get stream
+			Date now = new Date();
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd_MM_yyyy_HH_mm");
+			InputStream inputStream;
+			inputStream = new FileInputStream(FileConstants.MEMZUC_REPORT_NAME);
+			//return it
+			return new DefaultStreamedContent(inputStream, "application/pdf", dateFormat.format(now)+"_memzuc.pdf");
+		} catch (FileNotFoundException e) {
+			System.err.println(e.getLocalizedMessage());
+			PrimefacesUtils.showMessage(FacesMessage.SEVERITY_ERROR, "Dosya indirme hatasý!", "dosya oluþturulamadý!");
+			return null;
+		}
+	}
+	/**
+	 * convert b64png files to image file
+	 */
+	public void exportFilesToServer(){
+		System.out.println("MainController#exportFilesToServer");
+		this.saveBase64AsImage(hiddenInputs[0], FileConstants.CHART_0);
+		this.saveBase64AsImage(hiddenInputs[1], FileConstants.CHART_1);
+		this.saveBase64AsImage(hiddenInputs[2], FileConstants.CHART_2);
+		this.saveBase64AsImage(hiddenInputs[3], FileConstants.CHART_3);
+		this.saveBase64AsImage(hiddenInputs[4], FileConstants.CHART_4);
+		this.saveBase64AsImage(hiddenInputs[5], FileConstants.CHART_5);
+		this.saveBase64AsImage(hiddenInputs[6], FileConstants.CHART_6);
+		isReportReady = true;
+	}
 	
 	/**
 	 * reset charts
@@ -188,6 +255,8 @@ public class MainController implements Serializable{
          
         limitRisk = nakitRisk = facLeaRisk = glimitRisk = gnakitRisk = termGnakitRisk = termNakitRisk = model;//PREVENET NULL POINTER EXCEPTION
         isChartsDrow = false;
+        isReportReady = false;
+        hiddenInputs = new String[7];
 	}
 	/**
 	 * Check if chartseries contains all terms
@@ -201,6 +270,24 @@ public class MainController implements Serializable{
 					chartSeries.getData().put(term, 0);
 			}
 		}
+	}
+	/**
+	 * save base64 string as a image
+	 * @param base64
+	 * @param path
+	 */
+	private void saveBase64AsImage(String base64, String path){
+		if(base64.split(",").length > 1){
+	        String encoded = base64.split(",")[1];
+	        byte[] decoded = Base64.decodeBase64(encoded);
+	        // Write to a .png file
+	        try {
+	            RenderedImage renderedImage = ImageIO.read(new ByteArrayInputStream(decoded));
+	            ImageIO.write(renderedImage, "png", new File(path)); // use a proper path & file name here.
+	        } catch (IOException e) {
+	        	System.err.println(e.getMessage());
+	        }
+	    }
 	}
 	//GETTERS AND SETTERS
 	public Consolidated getConsolidated() {
@@ -263,5 +350,16 @@ public class MainController implements Serializable{
 	public void setTerms(List<String> terms) {
 		this.terms = terms;
 	}
-	
+	public String[] getHiddenInputs() {
+		return hiddenInputs;
+	}
+	public void setHiddenInputs(String[] hiddenInputs) {
+		this.hiddenInputs = hiddenInputs;
+	}
+	public boolean isReportReady() {
+		return isReportReady;
+	}
+	public void setReportReady(boolean isReportReady) {
+		this.isReportReady = isReportReady;
+	}
 }

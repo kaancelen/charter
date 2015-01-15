@@ -94,33 +94,66 @@
       	<p:dialog widgetVar="chartDlg" modal="true" appendTo="@(body)" resizable="false" draggable="false" header="Grafikler"
       			height="80%" width="80%" maximizable="true">
       		<h:form id="chartDlgForm">
+      			<h:inputHidden id="chart0Hidden" value="#{mainController.hiddenInputs[0]}"/>
+      			<h:inputHidden id="chart1Hidden" value="#{mainController.hiddenInputs[1]}"/>
+      			<h:inputHidden id="chart2Hidden" value="#{mainController.hiddenInputs[2]}"/>
+      			<h:inputHidden id="chart3Hidden" value="#{mainController.hiddenInputs[3]}"/>
+      			<h:inputHidden id="chart4Hidden" value="#{mainController.hiddenInputs[4]}"/>
+      			<h:inputHidden id="chart5Hidden" value="#{mainController.hiddenInputs[5]}"/>
+      			<h:inputHidden id="chart6Hidden" value="#{mainController.hiddenInputs[6]}"/>
+      			
       			<p:tabView style="width:99%">
-      				<p:ajax event="tabChange" listener="#{mainController.onTabChange}" update=":chartDlgForm:termDataTable"/>
+      				<p:ajax event="tabChange" listener="#{mainController.onTabChange}" update=":chartDlgForm"/>
       				<p:tab title="1">
-      					<p:chart type="bar" model="#{mainController.nakitRisk}" style="height:50%"/>
+      					<p:chart type="bar" model="#{mainController.nakitRisk}"/>
       				</p:tab>
       				<p:tab title="2">
-      					<p:chart type="bar" model="#{mainController.limitRisk}" style="height:50%"/>
+      					<p:chart type="bar" model="#{mainController.limitRisk}"/>
       				</p:tab>
       				<p:tab title="3">
-      					<p:chart type="bar" model="#{mainController.termNakitRisk}" style="height:50%"/>
+      					<p:chart type="bar" model="#{mainController.termNakitRisk}"/>
       				</p:tab>
       				<p:tab title="4">
-      					<p:chart type="bar" model="#{mainController.facLeaRisk}" style="height:50%"/>
+      					<p:chart type="bar" model="#{mainController.facLeaRisk}"/>
       				</p:tab>
       				<p:tab title="5">
-      					<p:chart type="bar" model="#{mainController.gnakitRisk}" style="height:50%"/>
+      					<p:chart type="bar" model="#{mainController.gnakitRisk}"/>
       				</p:tab>
       				<p:tab title="6">
-      					<p:chart type="bar" model="#{mainController.glimitRisk}" style="height:50%"/>
+      					<p:chart type="bar" model="#{mainController.glimitRisk}"/>
       				</p:tab>
       				<p:tab title="7">
-      					<p:chart type="bar" model="#{mainController.termGnakitRisk}" style="height:50%"/>
+      					<p:chart type="bar" model="#{mainController.termGnakitRisk}"/>
+      				</p:tab>
+      				<p:tab title="8">
+      					<div align="left">
+		      				<p:commandButton value="Rapor Hazırla" update="downloadReport" onclick="exportMemzucCharts()" action="#{mainController.exportFilesToServer}"/>
+		      					
+		      				<p:commandButton id="downloadReport" value="İndir" icon="ui-icon-arrowthickstop-1-s" disabled="#{!mainController.reportReady}"
+		      					ajax="false">
+		      					<p:fileDownload value="#{mainController.file}"/>
+		      				</p:commandButton>
+		      			</div>
+		      			<br/><br/>
+      					<p:chart widgetVar="chart0" type="bar" model="#{mainController.nakitRisk}"/>
+      					<br/><br/>
+      					<p:chart widgetVar="chart1" type="bar" model="#{mainController.limitRisk}"/>
+      					<br/><br/>
+      					<p:chart widgetVar="chart2" type="bar" model="#{mainController.termNakitRisk}"/>
+      					<br/><br/>
+      					<p:chart widgetVar="chart3" type="bar" model="#{mainController.facLeaRisk}"/>
+      					<br/><br/>
+      					<p:chart widgetVar="chart4" type="bar" model="#{mainController.gnakitRisk}"/>
+      					<br/><br/>
+      					<p:chart widgetVar="chart5" type="bar" model="#{mainController.glimitRisk}"/>
+      					<br/><br/>
+      					<p:chart widgetVar="chart6" type="bar" model="#{mainController.termGnakitRisk}"/>
       				</p:tab>
       			</p:tabView>
+      			<br/><br/>
       			<!-- DataTable -->
 	     		<p:dataTable id="termDataTable" emptyMessage="Data yok!" value="#{mainController.tableData}" var="data"
-	  				style="width:99%" resizableColumns="true" rowIndexVar="index">
+	  				resizableColumns="true" rowIndexVar="index" rendered="#{!(mainController.activeTab == 8)}">
 	  				<p:column headerText="Tip" style="font-size:12px">
 	  					<p:panelGrid rendered="#{mainController.activeTab == 1 or mainController.activeTab == 5}">
 	  						<p:outputLabel value="TCMB" rendered="#{index == 0}"/>

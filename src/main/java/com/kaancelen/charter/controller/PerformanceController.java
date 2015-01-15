@@ -3,11 +3,16 @@ package com.kaancelen.charter.controller;
 import java.awt.image.RenderedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +30,8 @@ import javax.imageio.ImageIO;
 
 import org.apache.commons.codec.binary.Base64;
 import org.primefaces.event.FileUploadEvent;
-import org.primefaces.event.TabChangeEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
 
@@ -35,6 +41,7 @@ import com.kaancelen.charter.constant.FileConstants;
 import com.kaancelen.charter.helpers.ChartHelper;
 import com.kaancelen.charter.helpers.DocumentHelper;
 import com.kaancelen.charter.helpers.FileHelper;
+import com.kaancelen.charter.helpers.PDFHelper;
 import com.kaancelen.charter.models.JobRecord;
 import com.kaancelen.charter.models.Performance;
 import com.kaancelen.charter.utils.PrimefacesUtils;
@@ -45,7 +52,6 @@ public class PerformanceController implements Serializable{
 
 	private static final long serialVersionUID = -8608336698009131718L;
 	private Performance performance;
-	private int activeTab;
 	private BarChartModel personelChart;
 	private BarChartModel departmentChart;
 	private boolean isChartsDrow;
@@ -53,6 +59,7 @@ public class PerformanceController implements Serializable{
 	private List<Map<Object, Number>> departmentData; 
 	private String performanceHidden;
 	private String departmentHidden;
+	private boolean isReportReady;
 	
 	@PostConstruct
 	public void init(){
@@ -62,6 +69,7 @@ public class PerformanceController implements Serializable{
 	@PreDestroy
 	public void destroy(){
 		System.out.println("PerformanceController#destroy");
+		FileHelper.removeDirectory(FileConstants.ROOT_PATH);//remove all files on exit
 	}
 	/**
 	 * @param componentSystemEvent
@@ -83,6 +91,7 @@ public class PerformanceController implements Serializable{
 			performance.setFilepath(FileConstants.ROOT_PATH + performance.getFilename());
 			performance.setUploadedDate(new Date());
 			isChartsDrow = false;
+			isReportReady = false;
 			//copy file to server
 			if(FileHelper.copyFile(performance.getFilepath(), event.getFile().getInputstream())){
 				PrimefacesUtils.showMessage(FacesMessage.SEVERITY_INFO, "Dosya baþarý ile yüklendi!", performance.getFilename());
@@ -108,13 +117,6 @@ public class PerformanceController implements Serializable{
 		PrimefacesUtils.executeScript("PF('uploadPerfFile').hide()");
 	}
 	/**
-	 * run on tabchange event
-	 */
-	public void onTabChange(TabChangeEvent event){
-		System.out.println("PerformanceController#onTabChange "+event.getTab().getTitle());
-		activeTab = Integer.parseInt(event.getTab().getTitle());
-	}
-	/**
 	 * 
 	 */
 	public void drawCharts(){
@@ -133,25 +135,36 @@ public class PerformanceController implements Serializable{
 	 */
 	public void exportFilesToServer(){
 		System.out.println("PerformanceController#exportFilesToServer");
-		System.out.println(departmentHidden);
-		System.out.println(performanceHidden);
-		if(departmentHidden.split(",").length > 1){
-	        String encoded = departmentHidden.split(",")[1];
-	        byte[] decoded = Base64.decodeBase64(encoded);
-	        // Write to a .png file
-	        try {
-	            RenderedImage renderedImage = ImageIO.read(new ByteArrayInputStream(decoded));
-	            ImageIO.write(renderedImage, "png", new File(FileConstants.ROOT_PATH + "out.png")); // use a proper path & file name here.
-	        } catch (IOException e) {
-	        	System.err.println(e.getMessage());
-	        }
-	    }
+		this.saveBase64AsImage(performanceHidden, FileConstants.PERF_CHART);
+		this.saveBase64AsImage(departmentHidden, FileConstants.DEPT_CHART);
+		isReportReady = true;
 	}
 	/**
 	 * @return
 	 */
 	public String[] getDepartmentColumns(){
 		return ChartConstants.DEPARTMENT_LABELS;
+	}
+	/**
+	 * create and return file content
+	 * @return
+	 */
+	public StreamedContent getFile(){
+		try {
+			//Create file
+			PDFHelper.createPerformanceReport(personelData, departmentData);
+			//get stream
+			Date now = new Date();
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd_MM_yyyy_HH_mm");
+			InputStream inputStream;
+			inputStream = new FileInputStream(FileConstants.PERF_REPORT_NAME);
+			//return it
+			return new DefaultStreamedContent(inputStream, "application/pdf", dateFormat.format(now)+"_performance.pdf");
+		} catch (FileNotFoundException e) {
+			System.err.println(e.getLocalizedMessage());
+			PrimefacesUtils.showMessage(FacesMessage.SEVERITY_ERROR, "Dosya indirme hatasý!", "dosya oluþturulamadý!");
+			return null;
+		}
 	}
 	//PRIVATE METHODS
 	/**
@@ -163,6 +176,7 @@ public class PerformanceController implements Serializable{
          
         personelChart = departmentChart = model;//PREVENET NULL POINTER EXCEPTION
         isChartsDrow = false;
+        isReportReady = false;
 	}
 	/**
 	 * Check if chartseries contains all terms
@@ -212,6 +226,24 @@ public class PerformanceController implements Serializable{
 		
 		departmentData.add(row);
 	}
+	/**
+	 * save base64 string as a image
+	 * @param base64
+	 * @param path
+	 */
+	private void saveBase64AsImage(String base64, String path){
+		if(base64.split(",").length > 1){
+	        String encoded = base64.split(",")[1];
+	        byte[] decoded = Base64.decodeBase64(encoded);
+	        // Write to a .png file
+	        try {
+	            RenderedImage renderedImage = ImageIO.read(new ByteArrayInputStream(decoded));
+	            ImageIO.write(renderedImage, "png", new File(path)); // use a proper path & file name here.
+	        } catch (IOException e) {
+	        	System.err.println(e.getMessage());
+	        }
+	    }
+	}
 	
 	
 	//GETTERS AND SETTERS
@@ -220,12 +252,6 @@ public class PerformanceController implements Serializable{
 	}
 	public void setPerformance(Performance performance) {
 		this.performance = performance;
-	}
-	public int getActiveTab() {
-		return activeTab;
-	}
-	public void setActiveTab(int activeTab) {
-		this.activeTab = activeTab;
 	}
 	public BarChartModel getPersonelChart() {
 		return personelChart;
@@ -262,5 +288,11 @@ public class PerformanceController implements Serializable{
 	}
 	public void setDepartmentHidden(String departmentHidden) {
 		this.departmentHidden = departmentHidden;
+	}
+	public boolean isReportReady() {
+		return isReportReady;
+	}
+	public void setReportReady(boolean isReportReady) {
+		this.isReportReady = isReportReady;
 	}
 }
