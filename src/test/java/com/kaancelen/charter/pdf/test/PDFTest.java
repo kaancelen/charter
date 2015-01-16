@@ -19,8 +19,8 @@ public class PDFTest {
 		for(int i=0; i<3; i++){
 			Map<Object, Number> map = new HashMap<Object, Number>();
 			System.out.println();
-			for(int j=0; j<13; j++){
-				map.put(names[j], random.nextInt(50));
+			for(int j=0; j<names.length; j++){
+				map.put(names[j], random.nextInt(1000000000));
 				System.out.println(names[j] + " = " + map.get(names[j]));
 			}
 			personelData.add(map);

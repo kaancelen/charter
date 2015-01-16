@@ -16,6 +16,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.graphics.xobject.PDPixelMap;
 import org.apache.pdfbox.pdmodel.graphics.xobject.PDXObjectImage;
@@ -32,7 +33,7 @@ public class PDFHelper {
 		try {
 			PDDocument document = new PDDocument();
 			
-			createPage(document, FileConstants.PERF_CHART, personelData, Arrays.asList("Rapor", "Memzuç", "Toplam"));
+			createPage(document, FileConstants.PERF_CHART, personelData, Arrays.asList("Rapor cikar", "Kullanim orani", "250-251 R.Kodu"));
 			createPage(document, FileConstants.DEPT_CHART, departmentData, Arrays.asList("Toplam", "Rapor", "Olumlu", "Olumsuz", "Memzuç"));
 			
 			document.save(FileConstants.PERF_REPORT_NAME);
@@ -79,7 +80,7 @@ public class PDFHelper {
 	 */
 	private static void createPage(PDDocument document, String imagePath, List<Map<Object, Number>> data, List<String> rowLabels) throws IOException{
 		int heightBuffer = 400;//image buffers
-		int widthBuffer = 300;
+		int widthBuffer = 200;
 		//convert image
 		PDXObjectImage image = new PDPixelMap(document, ImageIO.read(new File(imagePath)));
 		//Create page due to image dimensions
@@ -89,7 +90,7 @@ public class PDFHelper {
 		PDPageContentStream contentStream = new PDPageContentStream(document, page);
 		contentStream.drawImage(image, widthBuffer/3, 2*heightBuffer/3);
 		//draw table
-		drawTable(page, contentStream, heightBuffer/2, widthBuffer/30, convertDataToString(data, rowLabels));
+		drawTable(page, contentStream, heightBuffer/2, widthBuffer/15, convertDataToString(data, rowLabels));
 		//save file
 		contentStream.close();
 	}
@@ -149,7 +150,7 @@ public class PDFHelper {
 	                            String[][] content) throws IOException {
 	    final int rows = content.length;
 	    final int cols = content[0].length;
-	    final float rowHeight = 20f;
+	    final float rowHeight = 22f;
 	    final float tableWidth = page.findMediaBox().getWidth()-(2*margin);
 	    final float tableHeight = rowHeight * rows;
 	    final float colWidth = tableWidth/(float)cols;
@@ -169,13 +170,25 @@ public class PDFHelper {
 	        nextx += colWidth;
 	    }
 	 
-	    //now add the text
-	    contentStream.setFont(PDType1Font.HELVETICA_BOLD,12);
+	    PDFont header = PDType1Font.HELVETICA_BOLD;
+	    PDFont data = PDType1Font.HELVETICA;
+	    int fontSize = 12;
+	    if(cols > 8)
+	    	fontSize = 11;
+	    else if(cols > 12)
+	    	fontSize = 10;
+	    else if(cols > 15)
+	    	fontSize = 9;
 	 
 	    float textx = margin+cellMargin;
 	    float texty = y-15;
 	    for(int i = 0; i < content.length; i++){
 	        for(int j = 0 ; j < content[i].length; j++){
+	        	//set font if it is content or header
+	        	if(i==0 || j==0)
+	        		contentStream.setFont(header, fontSize);
+	        	else
+	        		contentStream.setFont(data, fontSize);
 	            String text = content[i][j];
 	            contentStream.beginText();
 	            contentStream.moveTextPositionByAmount(textx,texty);
