@@ -22,15 +22,3 @@ function exportMemzucCharts(){
 	document.getElementById('chartDlgForm:chart5Hidden').value = chart5.src;
 	document.getElementById('chartDlgForm:chart6Hidden').value = chart6.src;
 }
-
-function fixPFDialogToggleMaximize(dlg){
-	if(undefined == dlg.doToggleMaximize) {
-	    dlg.doToggleMaximize = dlg.toggleMaximize;
-	    dlg.toggleMaximize = function() {
-	        this.doToggleMaximize();
-
-	        var marginsDiff = this.content.outerHeight() - this.content.height();
-	        var newHeight = this.jq.innerHeight() - this.titlebar.outerHeight() - marginsDiff;
-	        this.content.height(newHeight);
-	    };
-	}

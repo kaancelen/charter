@@ -20,6 +20,7 @@ public class JobRecord implements Serializable{
 	private int dayDiff;
 	private String offerGrounds;
 	private String desc;//important
+	private String type;//process type
 	
 	@Override
 	public String toString() {
@@ -29,7 +30,8 @@ public class JobRecord implements Serializable{
 				+ ", requester=" + requester + ", requestDate=" + requestDate
 				+ ", completeDate=" + completeDate + ", month=" + month
 				+ ", result=" + result + ", dayDiff=" + dayDiff
-				+ ", offerGrounds=" + offerGrounds + ", desc=" + desc + "]";
+				+ ", offerGrounds=" + offerGrounds + ", desc=" + desc
+				+ ", type=" + type + "]";
 	}
 	public String getPersonel() {
 		return personel;
@@ -114,5 +116,11 @@ public class JobRecord implements Serializable{
 	}
 	public void setDesc(String desc) {
 		this.desc = desc;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
 	}
 }

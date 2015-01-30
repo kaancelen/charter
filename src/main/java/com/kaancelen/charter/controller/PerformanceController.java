@@ -12,9 +12,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -36,6 +34,7 @@ import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
 
 import com.kaancelen.charter.comparators.LabelComparator;
+import com.kaancelen.charter.comparators.StringComparator;
 import com.kaancelen.charter.constant.ChartConstants;
 import com.kaancelen.charter.constant.FileConstants;
 import com.kaancelen.charter.helpers.ChartHelper;
@@ -197,14 +196,16 @@ public class PerformanceController implements Serializable{
 	private void calculatePersonelData(){
 		personelData = new ArrayList<Map<Object, Number>>();
 		Map<Object, Number> report = personelChart.getSeries().get(0).getData();
-		Map<Object, Number> memzuc = personelChart.getSeries().get(1).getData();
-		Map<Object, Number> total = new HashMap<Object, Number>();
+		Map<Object, Number> cek = personelChart.getSeries().get(1).getData();
+		Map<Object, Number> memzuc = personelChart.getSeries().get(2).getData();
+		Map<Object, Number> total = new TreeMap<>(new StringComparator());
 		
 		for (Entry<Object, Number> entry : personelChart.getSeries().get(0).getData().entrySet()){
-			total.put(entry.getKey(), (Integer)report.get(entry.getKey()) + (Integer)memzuc.get(entry.getKey()));
+			total.put(entry.getKey(), (Integer)report.get(entry.getKey()) + (Integer)memzuc.get(entry.getKey()) + (Integer)cek.get(entry.getKey()));
 		}
 		
 		personelData.add(report);//report
+		personelData.add(cek);//Çek
 		personelData.add(memzuc);//memzuç
 		personelData.add(total);//total
 	}
@@ -213,16 +214,21 @@ public class PerformanceController implements Serializable{
 	 */
 	private void calculateDepartmentData(){
 		departmentData = new ArrayList<Map<Object, Number>>();
-		Map<Object, Number> total = departmentChart.getSeries().get(0).getData();//total
-		Map<Object, Number> report = departmentChart.getSeries().get(1).getData();//report
+		Map<Object, Number> report = departmentChart.getSeries().get(0).getData();//rapor
+		Map<Object, Number> cek = departmentChart.getSeries().get(1).getData();//çek
 		Map<Object, Number> memzuc = departmentChart.getSeries().get(2).getData();//memzuç
+		Map<Object, Number> total = departmentChart.getSeries().get(3).getData();//toplam
 		Map<Object, Number> row = new TreeMap<Object, Number>(new LabelComparator());
 		
-		row.put(ChartConstants.DEPARTMENT_LABELS[0], total.get(ChartConstants.DEPARTMENT_LABELS[0]));//Toplam
-		row.put(ChartConstants.DEPARTMENT_LABELS[1], report.get(ChartConstants.DEPARTMENT_LABELS[1]));//Rapor
-		row.put(ChartConstants.DEPARTMENT_LABELS[2], report.get(ChartConstants.DEPARTMENT_LABELS[2]));//Olumlu
-		row.put(ChartConstants.DEPARTMENT_LABELS[3], report.get(ChartConstants.DEPARTMENT_LABELS[3]));//Olumsuz
-		row.put(ChartConstants.DEPARTMENT_LABELS[4], memzuc.get(ChartConstants.DEPARTMENT_LABELS[4]));//Memzuç
+		
+		row.put(ChartConstants.DEPARTMENT_LABELS[0], report.get(ChartConstants.DEPARTMENT_LABELS[0]));//Rapor
+		row.put(ChartConstants.DEPARTMENT_LABELS[1], report.get(ChartConstants.DEPARTMENT_LABELS[1]));//Olumlu rapor
+		row.put(ChartConstants.DEPARTMENT_LABELS[2], report.get(ChartConstants.DEPARTMENT_LABELS[2]));//Olumsuz rapor
+		row.put(ChartConstants.DEPARTMENT_LABELS[3], cek.get(ChartConstants.DEPARTMENT_LABELS[3]));//Çek
+		row.put(ChartConstants.DEPARTMENT_LABELS[4], cek.get(ChartConstants.DEPARTMENT_LABELS[4]));//Olumlu çek
+		row.put(ChartConstants.DEPARTMENT_LABELS[5], cek.get(ChartConstants.DEPARTMENT_LABELS[5]));//Olumsuz çek
+		row.put(ChartConstants.DEPARTMENT_LABELS[6], memzuc.get(ChartConstants.DEPARTMENT_LABELS[6]));//Memzuç
+		row.put(ChartConstants.DEPARTMENT_LABELS[7], total.get(ChartConstants.DEPARTMENT_LABELS[7]));//Toplam
 		
 		departmentData.add(row);
 	}

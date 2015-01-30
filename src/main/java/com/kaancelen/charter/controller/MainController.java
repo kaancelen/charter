@@ -224,7 +224,7 @@ public class MainController implements Serializable{
 			InputStream inputStream;
 			inputStream = new FileInputStream(FileConstants.MEMZUC_REPORT_NAME);
 			//return it
-			return new DefaultStreamedContent(inputStream, "application/pdf", dateFormat.format(now)+"_memzuc.pdf");
+			return new DefaultStreamedContent(inputStream, "application/pdf", dateFormat.format(now)+"_"+consolidated.getFirmName()+"_memzuc.pdf");
 		} catch (FileNotFoundException e) {
 			System.err.println(e.getLocalizedMessage());
 			PrimefacesUtils.showMessage(FacesMessage.SEVERITY_ERROR, "Dosya indirme hatasý!", "dosya oluþturulamadý!");

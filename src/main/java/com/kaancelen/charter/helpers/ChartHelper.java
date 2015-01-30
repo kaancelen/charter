@@ -3,6 +3,7 @@ package com.kaancelen.charter.helpers;
 import java.util.List;
 
 import org.primefaces.model.chart.BarChartModel;
+import org.primefaces.model.chart.ChartSeries;
 
 import com.kaancelen.charter.models.JobRecord;
 import com.kaancelen.charter.models.Record;
@@ -76,14 +77,16 @@ public class ChartHelper {
 			title = "ÇALIÞAN PERFORMANS";
 			barChartModel.setLegendPosition("ne");
 			barChartModel.addSeries(ChartSeriesCalculator.PersonelReport(jobRecords));
+			barChartModel.addSeries(ChartSeriesCalculator.PersonelCek(jobRecords));
 			barChartModel.addSeries(ChartSeriesCalculator.PersonelMemzuc(jobRecords));
 			break;
 		case 2:
 			title = "BÖLÜM PERFORMANS";
 			barChartModel.setStacked(true);
-			barChartModel.addSeries(ChartSeriesCalculator.DepartmentReport(jobRecords, 1));
-			barChartModel.addSeries(ChartSeriesCalculator.DepartmentReport(jobRecords, 2));
-			barChartModel.addSeries(ChartSeriesCalculator.DepartmentReport(jobRecords, 3));
+			barChartModel.addSeries(ChartSeriesCalculator.DepartmentReport(jobRecords, 2));//Rapor
+			barChartModel.addSeries(ChartSeriesCalculator.DepartmentReport(jobRecords, 3));//Çek
+			barChartModel.addSeries(ChartSeriesCalculator.DepartmentReport(jobRecords, 4));//Memzuç
+			barChartModel.addSeries(ChartSeriesCalculator.DepartmentReport(jobRecords, 1));//Toplam
 			break;
 		}
 		

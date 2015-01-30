@@ -92,7 +92,7 @@
       	</p:dialog>
       	<!-- Charts dialog -->
       	<p:dialog widgetVar="chartDlg" modal="true" appendTo="@(body)" resizable="false" draggable="false" header="Grafikler"
-      			height="80%" width="80%" maximizable="true" >
+      			height="80%" width="80%" maximizable="true">
       		<h:form id="chartDlgForm">
       			<h:inputHidden id="chart0Hidden" value="#{mainController.hiddenInputs[0]}"/>
       			<h:inputHidden id="chart1Hidden" value="#{mainController.hiddenInputs[1]}"/>
@@ -154,7 +154,7 @@
       			<!-- DataTable -->
 	     		<p:dataTable id="termDataTable" emptyMessage="Data yok!" value="#{mainController.tableData}" var="data"
 	  				resizableColumns="true" rowIndexVar="index" rendered="#{!(mainController.activeTab == 8)}">
-	  				<p:column headerText="Tip" style="font-size:12px">
+	  				<p:column headerText="Tip" style="font-size:11px;font-weight: bold">
 	  					<p:panelGrid rendered="#{mainController.activeTab == 1 or mainController.activeTab == 5}">
 	  						<p:outputLabel value="TCMB" rendered="#{index == 0}"/>
 	  						<p:outputLabel value="Şekerbank" rendered="#{index == 1}"/>
@@ -171,7 +171,7 @@
 	  						<p:outputLabel value="24+ vade" rendered="#{index == 2}"/>
 	  					</p:panelGrid>
 	  					<p:panelGrid rendered="#{mainController.activeTab == 4}">
-	  						<p:outputLabel value="Factory" rendered="#{index == 0}"/>
+	  						<p:outputLabel value="Faktoring" rendered="#{index == 0}"/>
 	  						<p:outputLabel value="Leasing" rendered="#{index == 1}"/>
 	  					</p:panelGrid>
 	  				</p:column>
@@ -179,9 +179,9 @@
 	  					<f:facet name="header">
 	  						<p:outputLabel value="#{term}"/>
 	  					</f:facet>
-	  					<p:outputLabel value="%" rendered="#{(index == 2) and (mainController.activeTab == 2 or mainController.activeTab == 6)}"/>
-	 					<p:outputLabel value="#{data.get(term)}" style="font-size:12px">
-	 						<f:convertNumber pattern="" maxFractionDigits="2"/>
+	  					<p:outputLabel value="%" style="font-size:11px;float:right" rendered="#{(index == 2) and (mainController.activeTab == 2 or mainController.activeTab == 6)}"/>
+	 					<p:outputLabel value="#{data.get(term)}" style="font-size:11px;float:right">
+	 						<f:convertNumber pattern="" maxFractionDigits="0"/>
 	 					</p:outputLabel>
 	  				</p:columns>
 	  			</p:dataTable>

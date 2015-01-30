@@ -2,7 +2,7 @@ package com.kaancelen.charter.constant;
 
 public class FileConstants {
 
-	public static final String ROOT_PATH = "CHARTER_FILES\\";
+	public static final String ROOT_PATH = "C:\\CHARTER_FILES\\";
 	
 	public static final String PERF_CHART = ROOT_PATH + "performance.png";
 	public static final String DEPT_CHART = ROOT_PATH + "department.png";

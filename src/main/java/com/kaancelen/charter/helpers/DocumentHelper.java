@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -18,6 +17,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.kaancelen.charter.comparators.StringComparator;
 import com.kaancelen.charter.comparators.TermComparator;
 import com.kaancelen.charter.models.JobRecord;
 import com.kaancelen.charter.models.Record;
@@ -150,7 +150,8 @@ public class DocumentHelper {
 							case 10: record.setResult(cell.getStringCellValue().toLowerCase()); break;
 							case 11: record.setDayDiff((int)cell.getNumericCellValue()); break;
 							case 12: record.setOfferGrounds(cell.getStringCellValue()); break;
-							case 13: record.setDesc(cell.getStringCellValue().toLowerCase()); break;
+							case 13: record.setDesc(cell.getStringCellValue()); break;
+							case 14: record.setType(cell.getStringCellValue().toLowerCase());break;
 						}
 					}catch(IllegalStateException e){//if catch exception just keep going
 						System.err.println(e.getLocalizedMessage());
@@ -177,7 +178,7 @@ public class DocumentHelper {
 	 * @return
 	 */
 	public static List<String> getPersonels(List<JobRecord> jobRecords){
-		Set<String> personelSet = new HashSet<String>();
+		Set<String> personelSet = new TreeSet<>(new StringComparator());
 		for (JobRecord record : jobRecords) {
 			personelSet.add(record.getPersonel());
 		}
