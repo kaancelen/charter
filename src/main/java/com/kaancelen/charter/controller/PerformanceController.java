@@ -32,8 +32,10 @@ import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.model.chart.LineChartModel;
 
 import com.kaancelen.charter.comparators.LabelComparator;
+import com.kaancelen.charter.comparators.MonthComparator;
 import com.kaancelen.charter.comparators.StringComparator;
 import com.kaancelen.charter.constant.ChartConstants;
 import com.kaancelen.charter.constant.FileConstants;
@@ -53,11 +55,14 @@ public class PerformanceController implements Serializable{
 	private Performance performance;
 	private BarChartModel personelChart;
 	private BarChartModel departmentChart;
+	private LineChartModel monthlyChart;
 	private boolean isChartsDrow;
 	private List<Map<Object, Number>> personelData;
 	private List<Map<Object, Number>> departmentData; 
+	private List<Map<Object, Number>> monthlyData;
 	private String performanceHidden;
 	private String departmentHidden;
+	private String monthlyHidden;
 	private boolean isReportReady;
 	
 	@PostConstruct
@@ -113,6 +118,7 @@ public class PerformanceController implements Serializable{
 		List<JobRecord> jobRecords = DocumentHelper.getDatasFromExcelPerformanceFile(performance.getFilepath());
 		performance.setJobRecords(jobRecords);
 		performance.setPersonels(DocumentHelper.getPersonels(jobRecords));
+		performance.setMonths(DocumentHelper.getMonths(jobRecords));
 		PrimefacesUtils.executeScript("PF('uploadPerfFile').hide()");
 	}
 	/**
@@ -128,6 +134,9 @@ public class PerformanceController implements Serializable{
 		this.calculatePersonelData();
 		departmentChart = ChartHelper.drawPerformans(performance.getJobRecords(), 2);
 		this.calculateDepartmentData();
+		monthlyChart = ChartHelper.drawPerformansMonthly(performance.getJobRecords());
+		this.checkMonths(monthlyChart);
+		this.calculateMonthsData();
 	}
 	/**
 	 * convert b64png files to image file
@@ -136,6 +145,7 @@ public class PerformanceController implements Serializable{
 		System.out.println("PerformanceController#exportFilesToServer");
 		this.saveBase64AsImage(performanceHidden, FileConstants.PERF_CHART);
 		this.saveBase64AsImage(departmentHidden, FileConstants.DEPT_CHART);
+		this.saveBase64AsImage(monthlyHidden, FileConstants.MONTH_CHART);
 		isReportReady = true;
 	}
 	/**
@@ -151,7 +161,7 @@ public class PerformanceController implements Serializable{
 	public StreamedContent getFile(){
 		try {
 			//Create file
-			PDFHelper.createPerformanceReport(personelData, departmentData);
+			PDFHelper.createPerformanceReport(personelData, departmentData, monthlyData);
 			//get stream
 			Date now = new Date();
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd_MM_yyyy_HH_mm");
@@ -174,11 +184,12 @@ public class PerformanceController implements Serializable{
         model.addSeries(new ChartSeries("PREVENT NULL POINTER EXCEPTION"));
          
         personelChart = departmentChart = model;//PREVENET NULL POINTER EXCEPTION
+        monthlyChart = new LineChartModel();//PREVENET NULL POINTER EXCEPTION
         isChartsDrow = false;
         isReportReady = false;
 	}
 	/**
-	 * Check if chartseries contains all terms
+	 * Check if chartseries contains all personels
 	 * if not place 0
 	 * @param model
 	 */
@@ -187,6 +198,19 @@ public class PerformanceController implements Serializable{
 			for (String personel : performance.getPersonels()) {
 				if(!chartSeries.getData().containsKey(personel))
 					chartSeries.getData().put(personel, 0);
+			}
+		}
+	}
+	/**
+	 * Check if chartseries contains all months
+	 * if not place 0
+	 * @param model
+	 */
+	private void checkMonths(LineChartModel model){
+		for (ChartSeries chartSeries : model.getSeries()) {
+			for (String month : performance.getMonths()) {
+				if(!chartSeries.getData().containsKey(month))
+					chartSeries.getData().put(month, 0);
 			}
 		}
 	}
@@ -231,6 +255,16 @@ public class PerformanceController implements Serializable{
 		row.put(ChartConstants.DEPARTMENT_LABELS[7], total.get(ChartConstants.DEPARTMENT_LABELS[7]));//Toplam
 		
 		departmentData.add(row);
+	}
+	/**
+	 * produce monthly performance data
+	 */
+	private void calculateMonthsData(){
+		monthlyData = new ArrayList<Map<Object,Number>>();
+		for(int i=0; i<4; i++){
+			monthlyData.add(monthlyChart.getSeries().get(i).getData());
+		}
+		monthlyChart.getSeries().remove(3);//remove total line because i need it for only data table and i take that
 	}
 	/**
 	 * save base64 string as a image
@@ -300,5 +334,23 @@ public class PerformanceController implements Serializable{
 	}
 	public void setReportReady(boolean isReportReady) {
 		this.isReportReady = isReportReady;
+	}
+	public LineChartModel getMonthlyChart() {
+		return monthlyChart;
+	}
+	public void setMonthlyChart(LineChartModel monthlyChart) {
+		this.monthlyChart = monthlyChart;
+	}
+	public List<Map<Object, Number>> getMonthlyData() {
+		return monthlyData;
+	}
+	public void setMonthlyData(List<Map<Object, Number>> monthlyData) {
+		this.monthlyData = monthlyData;
+	}
+	public String getMonthlyHidden() {
+		return monthlyHidden;
+	}
+	public void setMonthlyHidden(String monthlyHidden) {
+		this.monthlyHidden = monthlyHidden;
 	}
 }

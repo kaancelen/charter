@@ -78,6 +78,7 @@
       		<h:form id="performanceChartDlgForm">
       			<h:inputHidden id="performanceHidden" value="#{performanceController.performanceHidden}"/>
      			<h:inputHidden id="departmentHidden" value="#{performanceController.departmentHidden}"/>
+     			<h:inputHidden id="monthHidden" value="#{performanceController.monthlyHidden}"/>
       			<p:tabView style="width:99%">
       				<p:ajax event="tabChange" update=":performanceChartDlgForm"/>
       				<p:tab title="Personel">
@@ -114,6 +115,26 @@
 							</p:columns>
 						</p:dataTable>
       				</p:tab>
+      				<p:tab title="Aylık">
+      					<p:chart type="line" model="#{performanceController.monthlyChart}"/>
+      					<br/><br/>
+      					<p:dataTable id="monthTable" value="#{performanceController.monthlyData}" var="data"
+							resizableColumns="true" rowIndexVar="index">
+						
+							<p:column headerText="Tip" style="font-size:12px;font-weight:bold;">
+								<p:outputLabel value="Rapor" rendered="#{index == 0}"/>
+								<p:outputLabel value="Çek" rendered="#{index == 1}"/>
+								<p:outputLabel value="Memzuç" rendered="#{index == 2}"/>
+								<p:outputLabel value="Toplam" rendered="#{index == 3}"/>
+							</p:column>
+							<p:columns value="#{performanceController.performance.months}" var="month" style="font-size:12px;text-align:center">
+								<f:facet name="header">
+									<p:outputLabel value="#{month}"/>
+								</f:facet>
+								<p:outputLabel value="#{data.get(month)}"/>
+							</p:columns>
+						</p:dataTable>
+      				</p:tab>
       				<p:tab title="Dışa Aktar">
       					<div align="left">
 		      				<p:commandButton value="Rapor Hazırla" action="#{performanceController.exportFilesToServer}" onclick="exportCharts()" update="downloadReport"/>
@@ -127,6 +148,8 @@
 		      			<p:chart widgetVar="personelChart" type="bar" model="#{performanceController.personelChart}"/>
       					<br/><br/>
       					<p:chart widgetVar="departmentChart" type="bar" model="#{performanceController.departmentChart}"/>
+      					<br/><br/>
+      					<p:chart widgetVar="monthChart" type="line" model="#{performanceController.monthlyChart}"/>
       				</p:tab>
       			</p:tabView>
       		</h:form>

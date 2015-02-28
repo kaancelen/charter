@@ -2,8 +2,12 @@ package com.kaancelen.charter.helpers;
 
 import java.util.List;
 
+import org.primefaces.model.chart.Axis;
+import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
+import org.primefaces.model.chart.CategoryAxis;
 import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.model.chart.LineChartModel;
 
 import com.kaancelen.charter.models.JobRecord;
 import com.kaancelen.charter.models.Record;
@@ -92,6 +96,28 @@ public class ChartHelper {
 		
 		barChartModel.setTitle(title);
 		return barChartModel;
+	}
+	
+	/**
+	 * 
+	 * @param jobRecords
+	 * @return
+	 */
+	public static LineChartModel drawPerformansMonthly(List<JobRecord> jobRecords){
+		LineChartModel lineChartModel = new LineChartModel();
+		lineChartModel.setTitle("AYLIK PERFORMANS");
+		lineChartModel.setLegendPosition("ne");
+		lineChartModel.setStacked(true);
+		lineChartModel.getAxes().put(AxisType.X, new CategoryAxis());
+		Axis yAxis = lineChartModel.getAxis(AxisType.Y);
+		yAxis.setMin(0);
+		
+		lineChartModel.addSeries(ChartSeriesCalculator.MonthlyReport(jobRecords, 2));//Rapor
+		lineChartModel.addSeries(ChartSeriesCalculator.MonthlyReport(jobRecords, 3));//Çek
+		lineChartModel.addSeries(ChartSeriesCalculator.MonthlyReport(jobRecords, 4));//Memzuç
+		lineChartModel.addSeries(ChartSeriesCalculator.MonthlyReport(jobRecords, 1));//Toplam
+		
+		return lineChartModel;
 	}
 
 }

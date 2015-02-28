@@ -6,6 +6,7 @@ public class FileConstants {
 	
 	public static final String PERF_CHART = ROOT_PATH + "performance.png";
 	public static final String DEPT_CHART = ROOT_PATH + "department.png";
+	public static final String MONTH_CHART = ROOT_PATH + "month.png";
 	
 	public static final String CHART_0 = ROOT_PATH + "chart0.png";
 	public static final String CHART_1 = ROOT_PATH + "chart1.png";

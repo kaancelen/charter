@@ -17,6 +17,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.kaancelen.charter.comparators.MonthComparator;
 import com.kaancelen.charter.comparators.StringComparator;
 import com.kaancelen.charter.comparators.TermComparator;
 import com.kaancelen.charter.models.JobRecord;
@@ -146,7 +147,7 @@ public class DocumentHelper {
 							case 6: record.setRequester(cell.getStringCellValue()); break;
 							case 7: record.setRequestDate(cell.getDateCellValue()); break;
 							case 8: record.setCompleteDate(cell.getDateCellValue()); break;
-							case 9: record.setMonth(cell.getStringCellValue()); break;
+							case 9: record.setMonth(StringUtil.replaceTurkishChars(cell.getStringCellValue().toUpperCase())); break;
 							case 10: record.setResult(cell.getStringCellValue().toLowerCase()); break;
 							case 11: record.setDayDiff((int)cell.getNumericCellValue()); break;
 							case 12: record.setOfferGrounds(cell.getStringCellValue()); break;
@@ -183,5 +184,17 @@ public class DocumentHelper {
 			personelSet.add(record.getPersonel());
 		}
 		return new ArrayList<String>(personelSet);
+	}
+	
+	/**
+	 * @param jobRecords
+	 * @return
+	 */
+	public static List<String> getMonths(List<JobRecord> jobRecords){
+		Set<String> monthSet = new TreeSet<>(new MonthComparator());
+		for (JobRecord record : jobRecords) {
+			monthSet.add(record.getMonth());
+		}
+		return new ArrayList<String>(monthSet);
 	}
 }

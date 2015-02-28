@@ -1,8 +1,10 @@
 function exportCharts() {
 	personelImg = PF('personelChart').exportAsImage();
 	departmentImg = PF('departmentChart').exportAsImage();
+	monthImg = PF('monthChart').exportAsImage();
 	document.getElementById('performanceChartDlgForm:performanceHidden').value = personelImg.src;
 	document.getElementById('performanceChartDlgForm:departmentHidden').value = departmentImg.src;
+	document.getElementById('performanceChartDlgForm:monthHidden').value = monthImg.src;
 }
 
 function exportMemzucCharts(){

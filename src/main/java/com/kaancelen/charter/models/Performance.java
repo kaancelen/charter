@@ -12,6 +12,7 @@ public class Performance implements Serializable{
 	private Date uploadedDate;
 	private List<JobRecord > jobRecords;
 	private List<String> personels;
+	private List<String> months;
 	
 	public Performance(){
 		super();
@@ -52,5 +53,11 @@ public class Performance implements Serializable{
 	}
 	public void setPersonels(List<String> personels) {
 		this.personels = personels;
+	}
+	public List<String> getMonths() {
+		return months;
+	}
+	public void setMonths(List<String> months) {
+		this.months = months;
 	}
 }

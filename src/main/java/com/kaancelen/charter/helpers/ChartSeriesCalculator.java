@@ -9,8 +9,10 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.model.chart.LineChartSeries;
 
 import com.kaancelen.charter.comparators.LabelComparator;
+import com.kaancelen.charter.comparators.MonthComparator;
 import com.kaancelen.charter.comparators.StringComparator;
 import com.kaancelen.charter.comparators.TermComparator;
 import com.kaancelen.charter.constant.BankConstants;
@@ -381,5 +383,56 @@ public class ChartSeriesCalculator {
 		ChartSeries chartSeries = new ChartSeries();
 		chartSeries.setData(departmentMap);
 		return chartSeries;
+	}
+	
+	/**
+	 * 
+	 * @param jobRecords
+	 * @param type
+	 * @return
+	 */
+	public static LineChartSeries MonthlyReport(List<JobRecord> jobRecords, int type){
+		Map<Object, Number> monthlyMap = new TreeMap<Object, Number>(new MonthComparator());
+		String label = "";
+		Integer oldValue = null;
+		
+		for (JobRecord jobRecord : jobRecords) {
+			switch (type) {
+			case 1:	//Toplam
+				oldValue = (Integer) monthlyMap.get(jobRecord.getMonth());
+				monthlyMap.put(jobRecord.getMonth(), 1 + (oldValue==null?0:oldValue));
+				break;
+			case 2://Rapor
+				if(jobRecord.getType() != null && jobRecord.getType().contains(BankConstants.rapor)){
+					oldValue = (Integer) monthlyMap.get(jobRecord.getMonth());
+					monthlyMap.put(jobRecord.getMonth(), 1 + (oldValue==null?0:oldValue));
+				}
+				break;
+			case 3://Çek
+				if(jobRecord.getType() != null && jobRecord.getType().contains(BankConstants.cek)){
+					oldValue = (Integer) monthlyMap.get(jobRecord.getMonth());
+					monthlyMap.put(jobRecord.getMonth(), 1 + (oldValue==null?0:oldValue));
+				}
+				break;
+			case 4://Memzuç
+				if(jobRecord.getType() != null && jobRecord.getType().contains(BankConstants.memzu)){
+					oldValue = (Integer) monthlyMap.get(jobRecord.getMonth());
+					monthlyMap.put(jobRecord.getMonth(), 1 + (oldValue==null?0:oldValue));
+				}
+				break;
+			}
+		}
+		
+		switch (type) {
+			case 1: label="Toplam";break;
+			case 2: label="Rapor Sayýsý";break;
+			case 3: label="Çek Sayýsý";break;
+			case 4: label="Memzuç Sayýsý";break;
+		}
+		
+		LineChartSeries lineChartSeries = new LineChartSeries(label);
+		lineChartSeries.setData(monthlyMap);
+		lineChartSeries.setFill(type!=1);
+		return lineChartSeries;
 	}
 }

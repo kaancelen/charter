@@ -30,12 +30,13 @@ public class PDFHelper {
 	 * create pdf report for performance
 	 * save it to under CHARTER_FILES
 	 */
-	public static void createPerformanceReport(List<Map<Object, Number>> personelData, List<Map<Object, Number>> departmentData){
+	public static void createPerformanceReport(List<Map<Object, Number>> personelData, List<Map<Object, Number>> departmentData, List<Map<Object, Number>> monthlyData){
 		try {
 			PDDocument document = new PDDocument();
 			
 			createPage(document, FileConstants.PERF_CHART, personelData, Arrays.asList("Rapor", "Çek", "Memzuç", "Toplam"));
 			createPage(document, FileConstants.DEPT_CHART, departmentData, Arrays.asList(ChartConstants.DEPARTMENT_LABELS));
+			createPage(document, FileConstants.MONTH_CHART, monthlyData, Arrays.asList("Rapor", "Çek", "Memzuç", "Toplam"));
 			
 			document.save(FileConstants.PERF_REPORT_NAME);
 			document.close();
