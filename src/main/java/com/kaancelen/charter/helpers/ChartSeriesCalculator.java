@@ -432,7 +432,7 @@ public class ChartSeriesCalculator {
 		
 		LineChartSeries lineChartSeries = new LineChartSeries(label);
 		lineChartSeries.setData(monthlyMap);
-		lineChartSeries.setFill(type!=1);
+		//lineChartSeries.setFill(type!=1);
 		return lineChartSeries;
 	}
 }

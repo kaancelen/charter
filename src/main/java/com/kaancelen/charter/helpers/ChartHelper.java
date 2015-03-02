@@ -107,7 +107,7 @@ public class ChartHelper {
 		LineChartModel lineChartModel = new LineChartModel();
 		lineChartModel.setTitle("AYLIK PERFORMANS");
 		lineChartModel.setLegendPosition("ne");
-		lineChartModel.setStacked(true);
+		//lineChartModel.setStacked(true);
 		lineChartModel.getAxes().put(AxisType.X, new CategoryAxis());
 		Axis yAxis = lineChartModel.getAxis(AxisType.Y);
 		yAxis.setMin(0);

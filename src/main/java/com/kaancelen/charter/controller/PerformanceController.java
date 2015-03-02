@@ -264,7 +264,7 @@ public class PerformanceController implements Serializable{
 		for(int i=0; i<4; i++){
 			monthlyData.add(monthlyChart.getSeries().get(i).getData());
 		}
-		monthlyChart.getSeries().remove(3);//remove total line because i need it for only data table and i take that
+		//monthlyChart.getSeries().remove(3);//remove total line because i need it for only data table and i take that
 	}
 	/**
 	 * save base64 string as a image
