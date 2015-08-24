@@ -28,7 +28,7 @@
 		<filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
 		<init-param>
 		<param-name>thresholdSize</param-name>
-		<param-value>6000000</param-value><!-- 10mb threshold size -->
+		<param-value>50000000</param-value><!-- 10mb threshold size -->
 		</init-param>
 		<init-param>
 			<param-name>uploadDirectory</param-name>
