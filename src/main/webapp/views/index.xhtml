@@ -82,7 +82,7 @@
       					<p:outputLabel for="firmNameReq" value="Firma Adı : "/>
       					<p:inputText id="firmNameReq" value="#{mainController.consolidated.firmName}" required="true" requiredMessage="Firma adı girmek zorunludur!"/>
       				</h:panelGrid>
-      				<p:fileUpload id="fileUpload" mode="advanced" sizeLimit="5000000" allowTypes="/(\.|\/)(xls|xlsx)$/"
+      				<p:fileUpload id="fileUpload" mode="advanced" sizeLimit="20000000" allowTypes="/(\.|\/)(xls|xlsx)$/"
       					fileUploadListener="#{mainController.onUploadFile}"	update=":indexForm" required="true" requiredMessage="Dosya yüklemek zorunludur!"/>
       			</h:panelGrid>
       			<br/><br/>
