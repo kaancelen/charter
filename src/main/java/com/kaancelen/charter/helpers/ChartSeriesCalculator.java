@@ -26,9 +26,9 @@ import com.kaancelen.charter.models.Record;
  */
 public class ChartSeriesCalculator {
 	/**
-	 * TCMB nakit/gayrinakit risk toplamlarýný hesaplar
+	 * TCMB nakit/gayrinakit risk toplamlarï¿½nï¿½ hesaplar
 	 * @param records
-	 * @param nakit = true nakit hesabý, nakit = false gayrinakit hesabý 
+	 * @param nakit = true nakit hesabï¿½, nakit = false gayrinakit hesabï¿½ 
 	 * @return
 	 */
 	public static ChartSeries tcmbNakitRisk(List<Record> records, boolean nakit){
@@ -49,7 +49,7 @@ public class ChartSeriesCalculator {
 	}
 	
 	/**
-	 * Sekerbank nakit/gayrinakit risk toplamlarýný hesaplar
+	 * Sekerbank nakit/gayrinakit risk toplamlarï¿½nï¿½ hesaplar
 	 * @param records
 	 * @return
 	 */
@@ -65,13 +65,13 @@ public class ChartSeriesCalculator {
 			}
 		}
 		
-		ChartSeries sekerbankNakitRisk = new ChartSeries("Þekerbank "+(nakit?"Nakit":"Gayrinakit")+" Risk");
+		ChartSeries sekerbankNakitRisk = new ChartSeries("Åžekerbank "+(nakit?"Nakit":"Gayrinakit")+" Risk");
 		sekerbankNakitRisk.setData(sekerbankNakitRiskMap);
 		return sekerbankNakitRisk;
 	}
 	
 	/**
-	 * Her dönem nakit/gayrinakit risk kayýdý bulunan kurum sayýsý
+	 * Her dï¿½nem nakit/gayrinakit risk kayï¿½dï¿½ bulunan kurum sayï¿½sï¿½
 	 * @param records
 	 * @return
 	 */
@@ -94,7 +94,7 @@ public class ChartSeriesCalculator {
 	}
 	
 	/**
-	 * TCMB nakit/gayrinakit limit toplamlarýný hesaplar
+	 * TCMB nakit/gayrinakit limit toplamlarï¿½nï¿½ hesaplar
 	 * @param records
 	 * @return
 	 */
@@ -115,7 +115,7 @@ public class ChartSeriesCalculator {
 	}
 	
 	/**
-	 * TCMB kisa vadeli nakit/gayrinakit risk toplamý
+	 * TCMB kisa vadeli nakit/gayrinakit risk toplamï¿½
 	 * @param records
 	 * @return
 	 */
@@ -136,7 +136,7 @@ public class ChartSeriesCalculator {
 	}
 	
 	/**
-	 * TCMB orta vadeli nakit/gayrinakit risk toplamý
+	 * TCMB orta vadeli nakit/gayrinakit risk toplamï¿½
 	 * @param records
 	 * @return
 	 */
@@ -157,7 +157,7 @@ public class ChartSeriesCalculator {
 	}
 	
 	/**
-	 * TCMB uzun vadeli nakit/gayrinakit risk toplamý
+	 * TCMB uzun vadeli nakit/gayrinakit risk toplamï¿½
 	 * @param records
 	 * @return
 	 */
@@ -178,7 +178,7 @@ public class ChartSeriesCalculator {
 	}
 	
 	/**
-	 * TCMB nakit teminine yönelik teminat mektubu (201, 251)
+	 * TCMB nakit teminine yï¿½nelik teminat mektubu (201, 251)
 	 * @param records
 	 * @return
 	 */
@@ -194,7 +194,7 @@ public class ChartSeriesCalculator {
 			}
 		}
 		
-		ChartSeries tcmbNTYTM = new ChartSeries("Nakit Teminine Yönelik Tem. Mek.(201, 251)");
+		ChartSeries tcmbNTYTM = new ChartSeries("Nakit Teminine YÃ¶nelik Tem. Mek.(201, 251)");
 		tcmbNTYTM.setData(tcmbNTYTMMap);
 		return tcmbNTYTM;
 	}
@@ -275,7 +275,7 @@ public class ChartSeriesCalculator {
 			}
 		}
 		
-		ChartSeries chartSeries = new ChartSeries("Rapor Sayýsý");
+		ChartSeries chartSeries = new ChartSeries("Rapor SayÄ±sÄ±");
 		chartSeries.setData(personelReportMap);
 		return chartSeries;
 	}
@@ -296,7 +296,7 @@ public class ChartSeriesCalculator {
 			}
 		}
 		
-		ChartSeries chartSeries = new ChartSeries("Memzuç Sayýsý");
+		ChartSeries chartSeries = new ChartSeries("MemzuÃ§ sayÄ±sÄ±");
 		chartSeries.setData(personelMemzucMap);
 		return chartSeries;
 	}
@@ -317,7 +317,7 @@ public class ChartSeriesCalculator {
 			}
 		}
 		
-		ChartSeries chartSeries = new ChartSeries("Çek Sayýsý");
+		ChartSeries chartSeries = new ChartSeries("Ã‡ek sayÄ±sÄ±");
 		chartSeries.setData(personelCekMap);
 		return chartSeries;
 	}
@@ -325,8 +325,8 @@ public class ChartSeriesCalculator {
 	/**
 	 * 1=> Toplam
 	 * 2=> Rapor
-	 * 3=> Çek
-	 * 4=> Memzuç
+	 * 3=> ï¿½ek
+	 * 4=> Memzuï¿½
 	 * @param jobRecords
 	 * @param type
 	 * @return
@@ -337,10 +337,10 @@ public class ChartSeriesCalculator {
 		departmentMap.put(ChartConstants.DEPARTMENT_LABELS[1], 0);//rapor
 		departmentMap.put(ChartConstants.DEPARTMENT_LABELS[2], 0);//olumlu rapor
 		departmentMap.put(ChartConstants.DEPARTMENT_LABELS[3], 0);//olumsuz rapor
-		departmentMap.put(ChartConstants.DEPARTMENT_LABELS[4], 0);//Çek
-		departmentMap.put(ChartConstants.DEPARTMENT_LABELS[5], 0);//olumlu çek
-		departmentMap.put(ChartConstants.DEPARTMENT_LABELS[6], 0);//olumsuz çek
-		departmentMap.put(ChartConstants.DEPARTMENT_LABELS[7], 0);//memzuç
+		departmentMap.put(ChartConstants.DEPARTMENT_LABELS[4], 0);//Ã§ek
+		departmentMap.put(ChartConstants.DEPARTMENT_LABELS[5], 0);//olumlu Ã§ek
+		departmentMap.put(ChartConstants.DEPARTMENT_LABELS[6], 0);//olumsuz Ã§ek
+		departmentMap.put(ChartConstants.DEPARTMENT_LABELS[7], 0);//memzuÃ§
 		
 		for (JobRecord jobRecord : jobRecords) {
 			switch (type) {
@@ -361,13 +361,13 @@ public class ChartSeriesCalculator {
 				}
 				break;
 			case 3:
-				//Çek
-				if(jobRecord.getType() != null && jobRecord.getType().contains(BankConstants.cek)){	//Toplam çek
+				//ï¿½ek
+				if(jobRecord.getType() != null && jobRecord.getType().contains(BankConstants.cek)){	//Toplam ï¿½ek
 					departmentMap.put(ChartConstants.DEPARTMENT_LABELS[3], 1 + (Integer)departmentMap.get(ChartConstants.DEPARTMENT_LABELS[3]));
-					if(jobRecord.getResult() != null && !jobRecord.getResult().contains(BankConstants.olumsuz)){ //olumlu çek
+					if(jobRecord.getResult() != null && !jobRecord.getResult().contains(BankConstants.olumsuz)){ //olumlu ï¿½ek
 						departmentMap.put(ChartConstants.DEPARTMENT_LABELS[4], 1 + (Integer)departmentMap.get(ChartConstants.DEPARTMENT_LABELS[4]));
 					}
-					if(jobRecord.getResult() != null && jobRecord.getResult().contains(BankConstants.olumsuz)){ //olumsuz çek
+					if(jobRecord.getResult() != null && jobRecord.getResult().contains(BankConstants.olumsuz)){ //olumsuz ï¿½ek
 						departmentMap.put(ChartConstants.DEPARTMENT_LABELS[5], 1 + (Integer)departmentMap.get(ChartConstants.DEPARTMENT_LABELS[5]));
 					}
 				}
@@ -408,13 +408,13 @@ public class ChartSeriesCalculator {
 					monthlyMap.put(jobRecord.getMonth(), 1 + (oldValue==null?0:oldValue));
 				}
 				break;
-			case 3://Çek
+			case 3://Ã§ek
 				if(jobRecord.getType() != null && jobRecord.getType().contains(BankConstants.cek)){
 					oldValue = (Integer) monthlyMap.get(jobRecord.getMonth());
 					monthlyMap.put(jobRecord.getMonth(), 1 + (oldValue==null?0:oldValue));
 				}
 				break;
-			case 4://Memzuç
+			case 4://MemzuÃ§
 				if(jobRecord.getType() != null && jobRecord.getType().contains(BankConstants.memzu)){
 					oldValue = (Integer) monthlyMap.get(jobRecord.getMonth());
 					monthlyMap.put(jobRecord.getMonth(), 1 + (oldValue==null?0:oldValue));
@@ -425,9 +425,9 @@ public class ChartSeriesCalculator {
 		
 		switch (type) {
 			case 1: label="Toplam";break;
-			case 2: label="Rapor Sayýsý";break;
-			case 3: label="Çek Sayýsý";break;
-			case 4: label="Memzuç Sayýsý";break;
+			case 2: label="Rapor SayÄ±sÄ±";break;
+			case 3: label="Ã‡ek SayÄ±sÄ±";break;
+			case 4: label="MemzuÃ§ SayÄ±sÄ±";break;
 		}
 		
 		LineChartSeries lineChartSeries = new LineChartSeries(label);

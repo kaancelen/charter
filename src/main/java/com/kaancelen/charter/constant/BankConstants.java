@@ -10,12 +10,12 @@ public class BankConstants {
 	public static final String[] gnakitSeries = {"200", "201", "203", "210", "250",
 		"251", "252", "253", "260", "270"};
 	
-	//nakit teminine yönelik teminat mektubu
+	//nakit teminine yï¿½nelik teminat mektubu
 	public static final String[] ntytm = {"201", "251"};
 	
 	public static final String sekerbankCode = "0059";
 	
-	public static final String cek = "çek";
+	public static final String cek = "Ã§ek";
 	public static final String rapor = "rapor";
 	public static final String memzu = "memzu";
 	public static final String olumlu = "olumlu";

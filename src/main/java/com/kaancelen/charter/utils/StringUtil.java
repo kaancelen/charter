@@ -7,18 +7,18 @@ public class StringUtil {
      * @return string with replaced characters
      */
     public static String replaceTurkishChars(String inString) {
-        inString = inString.replace("ý", "i");
-        inString = inString.replace("þ", "s");
-        inString = inString.replace("ð", "g");
-        inString = inString.replace("ü", "u");
-        inString = inString.replace("ö", "o");
-        inString = inString.replace("ç", "c");
-        inString = inString.replace("Ý", "I");
-        inString = inString.replace("Þ", "S");
-        inString = inString.replace("Ð", "G");
-        inString = inString.replace("Ü", "U");
-        inString = inString.replace("Ö", "O");
-        inString = inString.replace("Ç", "C");
+        inString = inString.replace("Ä±", "i");
+        inString = inString.replace("ÅŸ", "s");
+        inString = inString.replace("ÄŸ", "g");
+        inString = inString.replace("Ã¼", "u");
+        inString = inString.replace("Ã¶", "o");
+        inString = inString.replace("Ã§", "c");
+        inString = inString.replace("Ä°", "I");
+        inString = inString.replace("Åž", "S");
+        inString = inString.replace("Äž", "G");
+        inString = inString.replace("Ãœ", "U");
+        inString = inString.replace("Ã–", "O");
+        inString = inString.replace("Ã‡", "C");
         inString = inString.replace("\"", "'");
         return inString;
     }

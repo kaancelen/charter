@@ -28,39 +28,39 @@ public class ChartHelper {
 		
 		switch (type) {
 		case 1:
-			title = firmTitle+" MEMZUÇ DÖNEMLERÝNE GÖRE NAKÝT RÝSK DEÐÝÞÝMÝ"; 
+			title = firmTitle+" MEMZUÃ‡ DÃ–NEMLERÄ°NE GÃ–RE NAKÄ°T RÄ°SK DEÄžÄ°ÅžÄ°MÄ°"; 
 			barChartModel.addSeries(ChartSeriesCalculator.tcmbNakitRisk(records, true));
 			barChartModel.addSeries(ChartSeriesCalculator.sekerbankNakitRisk(records, true));
 			break;
 		case 2:
-			title = firmTitle+" TCMB NAKÝT LÝMÝT/RÝSK DEÐÝÞÝMÝ";
+			title = firmTitle+" TCMB NAKÄ°T LÄ°MÄ°T/RÄ°SK DEÄžÄ°ÅžÄ°MÄ°";
 			barChartModel.addSeries(ChartSeriesCalculator.tcmbNakitLimit(records, true));
 			barChartModel.addSeries(ChartSeriesCalculator.tcmbNakitRisk(records, true));
 			break;
 		case 3:
-			title = firmTitle+" MEMZUÇ DÖNEMLERÝNE GÖRE NAKÝT KISA,ORTA,UZUN VADE RÝSK DEÐÝÞÝMÝ";
+			title = firmTitle+" MEMZUÃ‡ DÃ–NEMLERÄ°NE GÃ–RE NAKÄ°T KISA,ORTA,UZUN VADE RÄ°SK DEÄžÄ°ÅžÄ°MÄ°";
 			barChartModel.addSeries(ChartSeriesCalculator.tcmbShortTermNakitRisk(records, true));
 			barChartModel.addSeries(ChartSeriesCalculator.tcmbMiddleTermNakitRisk(records, true));
 			barChartModel.addSeries(ChartSeriesCalculator.tcmbLongTermNakitRisk(records, true));
 			break;
 		case 4:
-			title = firmTitle+" FAKTORÝNG VE LEASÝNG RÝSK DEÐÝÞÝMÝ ";
+			title = firmTitle+" FAKTORÄ°NG VE LEASÄ°NG RÄ°SK DEÄžÄ°ÅžÄ°MÄ° ";
 			barChartModel.addSeries(ChartSeriesCalculator.facNakitRisk(records));
 			barChartModel.addSeries(ChartSeriesCalculator.leaNakitRisk(records));
 			break;
 		case 5:
-			title = firmTitle+" MEMZUÇ DÖNEMLERÝNE GÖRE G.NAKÝT RÝSK DEÐÝÞÝMÝ ";
+			title = firmTitle+" MEMZUÃ‡ DÃ‡NEMLERÄ°NE GÃ–RE G.NAKÄ°T RÄ°SK DEÄžÄ°ÅžÄ°MÄ° ";
 			barChartModel.addSeries(ChartSeriesCalculator.tcmbNakitRisk(records, false));
 			barChartModel.addSeries(ChartSeriesCalculator.sekerbankNakitRisk(records, false));
 			barChartModel.addSeries(ChartSeriesCalculator.tcmbNTYTM(records));
 			break;
 		case 6:
-			title = firmTitle+" TCMB G.NAKÝT LÝMÝT/RÝSK DEÐÝÞÝMÝ";
+			title = firmTitle+" TCMB G.NAKÄ°T LÄ°MÄ°T/RÄ°SK DEÄžÄ°ÅžÄ°MÄ°";
 			barChartModel.addSeries(ChartSeriesCalculator.tcmbNakitLimit(records, false));
 			barChartModel.addSeries(ChartSeriesCalculator.tcmbNakitRisk(records, false));
 			break;
 		case 7:
-			title = firmTitle+" MEMZUÇ DÖNEMLERÝNE GÖRE G.NAKÝT KISA,ORTA,UZUN VADE RÝSK DEÐÝÞÝMÝ";
+			title = firmTitle+" MEMZUÃ‡ DÃ–NEMLERÄ°NE GÃ–RE G.NAKÄ°T KISA,ORTA,UZUN VADE RÄ°SK DEÄžÄ°ÅžÄ°MÄ°";
 			barChartModel.addSeries(ChartSeriesCalculator.tcmbShortTermNakitRisk(records, false));
 			barChartModel.addSeries(ChartSeriesCalculator.tcmbMiddleTermNakitRisk(records, false));
 			barChartModel.addSeries(ChartSeriesCalculator.tcmbLongTermNakitRisk(records, false));
@@ -78,18 +78,18 @@ public class ChartHelper {
 		
 		switch (type) {
 		case 1:
-			title = "ÇALIÞAN PERFORMANS";
+			title = "Ã‡ALIÅžAN PERFORMANS";
 			barChartModel.setLegendPosition("ne");
 			barChartModel.addSeries(ChartSeriesCalculator.PersonelReport(jobRecords));
 			barChartModel.addSeries(ChartSeriesCalculator.PersonelCek(jobRecords));
 			barChartModel.addSeries(ChartSeriesCalculator.PersonelMemzuc(jobRecords));
 			break;
 		case 2:
-			title = "BÖLÜM PERFORMANS";
+			title = "BÃ–LÃœM PERFORMANS";
 			barChartModel.setStacked(true);
 			barChartModel.addSeries(ChartSeriesCalculator.DepartmentReport(jobRecords, 2));//Rapor
-			barChartModel.addSeries(ChartSeriesCalculator.DepartmentReport(jobRecords, 3));//Çek
-			barChartModel.addSeries(ChartSeriesCalculator.DepartmentReport(jobRecords, 4));//Memzuç
+			barChartModel.addSeries(ChartSeriesCalculator.DepartmentReport(jobRecords, 3));//Ã‡ek
+			barChartModel.addSeries(ChartSeriesCalculator.DepartmentReport(jobRecords, 4));//MemzuÃ§
 			barChartModel.addSeries(ChartSeriesCalculator.DepartmentReport(jobRecords, 1));//Toplam
 			break;
 		}
@@ -113,8 +113,8 @@ public class ChartHelper {
 		yAxis.setMin(0);
 		
 		lineChartModel.addSeries(ChartSeriesCalculator.MonthlyReport(jobRecords, 2));//Rapor
-		lineChartModel.addSeries(ChartSeriesCalculator.MonthlyReport(jobRecords, 3));//Çek
-		lineChartModel.addSeries(ChartSeriesCalculator.MonthlyReport(jobRecords, 4));//Memzuç
+		lineChartModel.addSeries(ChartSeriesCalculator.MonthlyReport(jobRecords, 3));//Ã‡ek
+		lineChartModel.addSeries(ChartSeriesCalculator.MonthlyReport(jobRecords, 4));//MemzuÃ§
 		lineChartModel.addSeries(ChartSeriesCalculator.MonthlyReport(jobRecords, 1));//Toplam
 		
 		return lineChartModel;

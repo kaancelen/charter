@@ -98,15 +98,15 @@ public class PerformanceController implements Serializable{
 			isReportReady = false;
 			//copy file to server
 			if(FileHelper.copyFile(performance.getFilepath(), event.getFile().getInputstream())){
-				PrimefacesUtils.showMessage(FacesMessage.SEVERITY_INFO, "Dosya baþarý ile yüklendi!", performance.getFilename());
+				PrimefacesUtils.showMessage(FacesMessage.SEVERITY_INFO, "Dosya baÅŸarÄ± ile yÃ¼klendi!", performance.getFilename());
 			}else{
-				PrimefacesUtils.showMessage(FacesMessage.SEVERITY_ERROR, "Dosya yüklemesi baþarýsýz!", performance.getFilename());
+				PrimefacesUtils.showMessage(FacesMessage.SEVERITY_ERROR, "Dosya yÃ¼klemesi baÅŸarÄ±sÄ±z!", performance.getFilename());
 			}
 		} catch (UnsupportedEncodingException e) {
-			PrimefacesUtils.showMessage(FacesMessage.SEVERITY_ERROR, "Dosya ismi çevrilemedi!", "");
+			PrimefacesUtils.showMessage(FacesMessage.SEVERITY_ERROR, "Dosya ismi Ã§evrilemedi!", "");
 			System.err.println("MainController : " + e.getLocalizedMessage());
 		} catch (IOException e) {
-			PrimefacesUtils.showMessage(FacesMessage.SEVERITY_ERROR, "Dosya yüklenemedi!", "");
+			PrimefacesUtils.showMessage(FacesMessage.SEVERITY_ERROR, "Dosya yÃ¼klenemedi!", "");
 			System.err.println("MainController : " + e.getLocalizedMessage());
 		}
 	}
@@ -171,7 +171,7 @@ public class PerformanceController implements Serializable{
 			return new DefaultStreamedContent(inputStream, "application/pdf", dateFormat.format(now)+"_performance.pdf");
 		} catch (FileNotFoundException e) {
 			System.err.println(e.getLocalizedMessage());
-			PrimefacesUtils.showMessage(FacesMessage.SEVERITY_ERROR, "Dosya indirme hatasý!", "dosya oluþturulamadý!");
+			PrimefacesUtils.showMessage(FacesMessage.SEVERITY_ERROR, "Dosya indirme hatasÄ±!", "dosya oluÅŸturulamadÄ±!");
 			return null;
 		}
 	}
@@ -229,8 +229,8 @@ public class PerformanceController implements Serializable{
 		}
 		
 		personelData.add(report);//report
-		personelData.add(cek);//Çek
-		personelData.add(memzuc);//memzuç
+		personelData.add(cek);//Ã§ek
+		personelData.add(memzuc);//memzuÃ§
 		personelData.add(total);//total
 	}
 	/**
@@ -239,8 +239,8 @@ public class PerformanceController implements Serializable{
 	private void calculateDepartmentData(){
 		departmentData = new ArrayList<Map<Object, Number>>();
 		Map<Object, Number> report = departmentChart.getSeries().get(0).getData();//rapor
-		Map<Object, Number> cek = departmentChart.getSeries().get(1).getData();//çek
-		Map<Object, Number> memzuc = departmentChart.getSeries().get(2).getData();//memzuç
+		Map<Object, Number> cek = departmentChart.getSeries().get(1).getData();//Ã§ek
+		Map<Object, Number> memzuc = departmentChart.getSeries().get(2).getData();//memzuÃ§
 		Map<Object, Number> total = departmentChart.getSeries().get(3).getData();//toplam
 		Map<Object, Number> row = new TreeMap<Object, Number>(new LabelComparator());
 		
@@ -248,10 +248,10 @@ public class PerformanceController implements Serializable{
 		row.put(ChartConstants.DEPARTMENT_LABELS[0], report.get(ChartConstants.DEPARTMENT_LABELS[0]));//Rapor
 		row.put(ChartConstants.DEPARTMENT_LABELS[1], report.get(ChartConstants.DEPARTMENT_LABELS[1]));//Olumlu rapor
 		row.put(ChartConstants.DEPARTMENT_LABELS[2], report.get(ChartConstants.DEPARTMENT_LABELS[2]));//Olumsuz rapor
-		row.put(ChartConstants.DEPARTMENT_LABELS[3], cek.get(ChartConstants.DEPARTMENT_LABELS[3]));//Çek
-		row.put(ChartConstants.DEPARTMENT_LABELS[4], cek.get(ChartConstants.DEPARTMENT_LABELS[4]));//Olumlu çek
-		row.put(ChartConstants.DEPARTMENT_LABELS[5], cek.get(ChartConstants.DEPARTMENT_LABELS[5]));//Olumsuz çek
-		row.put(ChartConstants.DEPARTMENT_LABELS[6], memzuc.get(ChartConstants.DEPARTMENT_LABELS[6]));//Memzuç
+		row.put(ChartConstants.DEPARTMENT_LABELS[3], cek.get(ChartConstants.DEPARTMENT_LABELS[3]));//Ã§ek
+		row.put(ChartConstants.DEPARTMENT_LABELS[4], cek.get(ChartConstants.DEPARTMENT_LABELS[4]));//Olumlu Ã§ek
+		row.put(ChartConstants.DEPARTMENT_LABELS[5], cek.get(ChartConstants.DEPARTMENT_LABELS[5]));//Olumsuz Ã§ek
+		row.put(ChartConstants.DEPARTMENT_LABELS[6], memzuc.get(ChartConstants.DEPARTMENT_LABELS[6]));//MemzuÃ§
 		row.put(ChartConstants.DEPARTMENT_LABELS[7], total.get(ChartConstants.DEPARTMENT_LABELS[7]));//Toplam
 		
 		departmentData.add(row);

@@ -96,17 +96,17 @@ public class MainController implements Serializable{
 			consolidated.setUploadedDate(new Date());
 			//copy file to server
 			if(FileHelper.copyFile(consolidated.getFilepath(), event.getFile().getInputstream())){
-				PrimefacesUtils.showMessage(FacesMessage.SEVERITY_INFO, "Dosya baþarý ile yüklendi!", consolidated.getFilename());
+				PrimefacesUtils.showMessage(FacesMessage.SEVERITY_INFO, "Dosya baÅŸarÄ± ile yÃ¼klendi!", consolidated.getFilename());
 				isChartsDrow = false;//Yeni dosya yuklendi
 				isReportReady = false;
 			}else{
-				PrimefacesUtils.showMessage(FacesMessage.SEVERITY_ERROR, "Dosya yüklemesi baþarýsýz!", consolidated.getFilename());
+				PrimefacesUtils.showMessage(FacesMessage.SEVERITY_ERROR, "Dosya yÃ¼klemesi baÅŸarÄ±sÄ±z!", consolidated.getFilename());
 			}
 		} catch (UnsupportedEncodingException e) {
-			PrimefacesUtils.showMessage(FacesMessage.SEVERITY_ERROR, "Dosya ismi çevrilemedi!", "");
+			PrimefacesUtils.showMessage(FacesMessage.SEVERITY_ERROR, "Dosya ismi Ã§evrilemedi!", "");
 			System.err.println("MainController : " + e.getLocalizedMessage());
 		} catch (IOException e) {
-			PrimefacesUtils.showMessage(FacesMessage.SEVERITY_ERROR, "Dosya yüklenemedi!", "");
+			PrimefacesUtils.showMessage(FacesMessage.SEVERITY_ERROR, "Dosya yÃ¼klenemedi!", "");
 			System.err.println("MainController : " + e.getLocalizedMessage());
 		}
 		
@@ -227,7 +227,7 @@ public class MainController implements Serializable{
 			return new DefaultStreamedContent(inputStream, "application/pdf", dateFormat.format(now)+"_"+consolidated.getFirmName()+"_memzuc.pdf");
 		} catch (FileNotFoundException e) {
 			System.err.println(e.getLocalizedMessage());
-			PrimefacesUtils.showMessage(FacesMessage.SEVERITY_ERROR, "Dosya indirme hatasý!", "dosya oluþturulamadý!");
+			PrimefacesUtils.showMessage(FacesMessage.SEVERITY_ERROR, "Dosya indirme hatasÄ±!", "dosya oluÅŸturulamadÄ±!");
 			return null;
 		}
 	}

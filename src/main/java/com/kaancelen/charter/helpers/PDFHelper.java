@@ -34,9 +34,9 @@ public class PDFHelper {
 		try {
 			PDDocument document = new PDDocument();
 			
-			createPage(document, FileConstants.PERF_CHART, personelData, Arrays.asList("Rapor", "Çek", "Memzuç", "Toplam"));
+			createPage(document, FileConstants.PERF_CHART, personelData, Arrays.asList("Rapor", "Ã‡ek", "MemzuÃ§", "Toplam"));
 			createPage(document, FileConstants.DEPT_CHART, departmentData, Arrays.asList(ChartConstants.DEPARTMENT_LABELS));
-			createPage(document, FileConstants.MONTH_CHART, monthlyData, Arrays.asList("Rapor", "Çek", "Memzuç", "Toplam"));
+			createPage(document, FileConstants.MONTH_CHART, monthlyData, Arrays.asList("Rapor", "Ã‡ek", "MemzuÃ§", "Toplam"));
 			
 			document.save(FileConstants.PERF_REPORT_NAME);
 			document.close();
@@ -48,7 +48,7 @@ public class PDFHelper {
 		}
 	}
 	/**
-	 * create pdf report for memzuç
+	 * create pdf report for memzuï¿½
 	 * save it under CHARTER_FILES
 	 */
 	public static void createMemzucReport(List<List<Map<Object, Number>>> datas){

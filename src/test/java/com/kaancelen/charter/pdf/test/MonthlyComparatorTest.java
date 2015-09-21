@@ -4,7 +4,7 @@ import com.kaancelen.charter.utils.StringUtil;
 
 public class MonthlyComparatorTest {
 	public static void main(String[] args) {
-		String month = "EYlül";
+		String month = "EYLÃ¼L";
 		
 		System.out.println(StringUtil.replaceTurkishChars(month.toUpperCase()));
 		
