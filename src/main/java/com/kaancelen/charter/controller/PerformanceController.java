@@ -56,6 +56,7 @@ public class PerformanceController implements Serializable{
 	private BarChartModel personelChart;
 	private BarChartModel departmentChart;
 	private LineChartModel monthlyChart;
+	private BarChartModel compareChart;
 	private boolean isChartsDrow;
 	private List<Map<Object, Number>> personelData;
 	private List<Map<Object, Number>> departmentData; 
@@ -119,6 +120,7 @@ public class PerformanceController implements Serializable{
 		performance.setJobRecords(jobRecords);
 		performance.setPersonels(DocumentHelper.getPersonels(jobRecords));
 		performance.setMonths(DocumentHelper.getMonths(jobRecords));
+		performance.setYears(DocumentHelper.getYears(jobRecords));
 		PrimefacesUtils.executeScript("PF('uploadPerfFile').hide()");
 	}
 	/**
@@ -129,14 +131,19 @@ public class PerformanceController implements Serializable{
 			return;
 		}
 		System.out.println("PerformanceController#drawCharts");
+		
 		personelChart = ChartHelper.drawPerformans(performance.getJobRecords(), 1);
 		this.checkPersonels(personelChart);
 		this.calculatePersonelData();
+		
 		departmentChart = ChartHelper.drawPerformans(performance.getJobRecords(), 2);
 		this.calculateDepartmentData();
+		
 		monthlyChart = ChartHelper.drawPerformansMonthly(performance.getJobRecords());
 		this.checkMonths(monthlyChart);
 		this.calculateMonthsData();
+		
+		compareChart = ChartHelper.drawCompareMonthly(performance.getJobRecords(), performance.getMonths());
 	}
 	/**
 	 * convert b64png files to image file
@@ -183,7 +190,7 @@ public class PerformanceController implements Serializable{
 		BarChartModel model = new BarChartModel();
         model.addSeries(new ChartSeries("PREVENT NULL POINTER EXCEPTION"));
          
-        personelChart = departmentChart = model;//PREVENET NULL POINTER EXCEPTION
+        personelChart = departmentChart = compareChart = model;//PREVENET NULL POINTER EXCEPTION
         monthlyChart = new LineChartModel();//PREVENET NULL POINTER EXCEPTION
         isChartsDrow = false;
         isReportReady = false;
@@ -352,5 +359,11 @@ public class PerformanceController implements Serializable{
 	}
 	public void setMonthlyHidden(String monthlyHidden) {
 		this.monthlyHidden = monthlyHidden;
+	}
+	public BarChartModel getCompareChart() {
+		return compareChart;
+	}
+	public void setCompareChart(BarChartModel compareChart) {
+		this.compareChart = compareChart;
 	}
 }

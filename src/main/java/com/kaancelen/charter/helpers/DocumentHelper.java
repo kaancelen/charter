@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -147,12 +148,13 @@ public class DocumentHelper {
 							case 6: record.setRequester(cell.getStringCellValue()); break;
 							case 7: record.setRequestDate(cell.getDateCellValue()); break;
 							case 8: record.setCompleteDate(cell.getDateCellValue()); break;
-							case 9: record.setMonth(StringUtil.replaceTurkishChars(cell.getStringCellValue().toUpperCase())); break;
-							case 10: record.setResult(cell.getStringCellValue().toLowerCase()); break;
-							case 11: record.setDayDiff((int)cell.getNumericCellValue()); break;
-							case 12: record.setOfferGrounds(cell.getStringCellValue()); break;
-							case 13: record.setDesc(cell.getStringCellValue()); break;
-							case 14: record.setType(cell.getStringCellValue().toLowerCase());break;
+							case 9: record.setYear(cell.getStringCellValue()); break;
+							case 10: record.setMonth(StringUtil.replaceTurkishChars(cell.getStringCellValue().toUpperCase())); break;
+							case 11: record.setResult(cell.getStringCellValue().toLowerCase()); break;
+							case 12: record.setDayDiff((int)cell.getNumericCellValue()); break;
+							case 13: record.setOfferGrounds(cell.getStringCellValue()); break;
+							case 14: record.setDesc(cell.getStringCellValue()); break;
+							case 15: record.setType(cell.getStringCellValue().toLowerCase());break;
 						}
 					}catch(IllegalStateException e){//if catch exception just keep going
 						System.err.println(e.getLocalizedMessage());
@@ -196,5 +198,9 @@ public class DocumentHelper {
 			monthSet.add(record.getMonth());
 		}
 		return new ArrayList<String>(monthSet);
+	}
+	
+	public static List<String> getYears(List<JobRecord> jobRecords){
+		return Arrays.asList("2015", "2016");//TODO later take that from jobRecords
 	}
 }

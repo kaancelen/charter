@@ -135,6 +135,9 @@
 							</p:columns>
 						</p:dataTable>
       				</p:tab>
+      				<p:tab title="Aylık-Karş.">
+      					<p:chart type="bar" model="#{performanceController.compareChart}"/>
+      				</p:tab>
       				<p:tab title="Dışa Aktar">
       					<div align="left">
 		      				<p:commandButton value="Rapor Hazırla" action="#{performanceController.exportFilesToServer}" onclick="exportCharts()" update="downloadReport"/>

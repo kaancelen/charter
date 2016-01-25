@@ -435,4 +435,33 @@ public class ChartSeriesCalculator {
 		//lineChartSeries.setFill(type!=1);
 		return lineChartSeries;
 	}
+	
+	/**
+	 * @param jobRecords
+	 * @param month
+	 * @return
+	 */
+	public static ChartSeries CompareReport(List<JobRecord> jobRecords, String drawedMonth, List<String> months){
+		Map<Object, Number> compareMap = new TreeMap<Object, Number>();
+		for (String month : months) {
+			compareMap.put(month + "-2015", 0);
+			compareMap.put(month + "-2016", 0);
+		}
+		
+		int i=0;
+		for (JobRecord jobRecord : jobRecords) {
+			if(jobRecord.getYear() != null && jobRecord.getYear().equals("2015")){
+				compareMap.put(drawedMonth + "-2015", 1 + (Integer)compareMap.get(drawedMonth + "-2015"));
+			}
+			if(jobRecord.getYear() != null && jobRecord.getYear().equals("2016")){
+				compareMap.put(drawedMonth + "-2016", 1 + (Integer)compareMap.get(drawedMonth + "-2016"));
+			}
+			
+			System.err.println("("+(++i)+") ["+jobRecord.getYear()+"]");
+		}
+		
+		ChartSeries chartSeries = new ChartSeries();
+		chartSeries.setData(compareMap);
+		return chartSeries; 
+	}
 }

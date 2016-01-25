@@ -16,23 +16,13 @@ public class JobRecord implements Serializable{
 	private Date requestDate;
 	private Date completeDate;
 	private String month;
+	private String year;
 	private String result;//important
 	private int dayDiff;
 	private String offerGrounds;
 	private String desc;//important
 	private String type;//process type
 	
-	@Override
-	public String toString() {
-		return "JobRecord [personel=" + personel + ", firm=" + firm
-				+ ", group=" + group + ", offerLimit=" + offerLimit
-				+ ", segment=" + segment + ", branch=" + branch
-				+ ", requester=" + requester + ", requestDate=" + requestDate
-				+ ", completeDate=" + completeDate + ", month=" + month
-				+ ", result=" + result + ", dayDiff=" + dayDiff
-				+ ", offerGrounds=" + offerGrounds + ", desc=" + desc
-				+ ", type=" + type + "]";
-	}
 	public String getPersonel() {
 		return personel;
 	}
@@ -122,5 +112,19 @@ public class JobRecord implements Serializable{
 	}
 	public void setType(String type) {
 		this.type = type;
+	}
+	public String getYear() {
+		return year;
+	}
+	public void setYear(String year) {
+		this.year = year;
+	}
+	@Override
+	public String toString() {
+		return "JobRecord [personel=" + personel + ", firm=" + firm + ", group=" + group + ", offerLimit=" + offerLimit
+				+ ", segment=" + segment + ", branch=" + branch + ", requester=" + requester + ", requestDate="
+				+ requestDate + ", completeDate=" + completeDate + ", month=" + month + ", year=" + year + ", result="
+				+ result + ", dayDiff=" + dayDiff + ", offerGrounds=" + offerGrounds + ", desc=" + desc + ", type="
+				+ type + "]";
 	}
 }

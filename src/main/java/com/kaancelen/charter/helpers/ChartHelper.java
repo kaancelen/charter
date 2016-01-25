@@ -119,5 +119,17 @@ public class ChartHelper {
 		
 		return lineChartModel;
 	}
+	
+	public static BarChartModel drawCompareMonthly(List<JobRecord> jobRecords, List<String> months){
+		BarChartModel barChartModel = new BarChartModel();
+		barChartModel.setTitle("AYLIK KARŞILAŞTIRMA");
+		barChartModel.setStacked(true);
+		
+		for (String month : months) {
+			barChartModel.addSeries(ChartSeriesCalculator.CompareReport(jobRecords, month, months));
+		}
+		
+		return barChartModel;
+	}
 
 }

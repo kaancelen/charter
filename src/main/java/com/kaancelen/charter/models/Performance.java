@@ -13,17 +13,12 @@ public class Performance implements Serializable{
 	private List<JobRecord > jobRecords;
 	private List<String> personels;
 	private List<String> months;
+	private List<String> years;
 	
 	public Performance(){
 		super();
 	}
 	
-	@Override
-	public String toString() {
-		return "Performance [filename=" + filename + ", filepath=" + filepath
-				+ ", uploadedDate=" + uploadedDate + ", jobRecords="
-				+ jobRecords + ", personels=" + personels + "]";
-	}
 	public String getFilename() {
 		return filename;
 	}
@@ -59,5 +54,17 @@ public class Performance implements Serializable{
 	}
 	public void setMonths(List<String> months) {
 		this.months = months;
+	}
+	public List<String> getYears() {
+		return years;
+	}
+	public void setYears(List<String> years) {
+		this.years = years;
+	}
+	@Override
+	public String toString() {
+		return "Performance [filename=" + filename + ", filepath=" + filepath + ", uploadedDate=" + uploadedDate
+				+ ", jobRecords=" + jobRecords + ", personels=" + personels + ", months=" + months + ", years=" + years
+				+ "]";
 	}
 }
