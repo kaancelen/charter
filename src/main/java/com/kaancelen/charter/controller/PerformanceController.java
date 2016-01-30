@@ -65,6 +65,7 @@ public class PerformanceController implements Serializable{
 	private String departmentHidden;
 	private String monthlyHidden;
 	private boolean isReportReady;
+	private boolean compareChartDraw;
 	
 	@PostConstruct
 	public void init(){
@@ -130,20 +131,22 @@ public class PerformanceController implements Serializable{
 		if(isChartsDrow){//eger chartlar zaten cizilmisse tekrar cizmene gerek yok
 			return;
 		}
-		System.out.println("PerformanceController#drawCharts");
-		
-		personelChart = ChartHelper.drawPerformans(performance.getJobRecords(), 1);
-		this.checkPersonels(personelChart);
-		this.calculatePersonelData();
-		
-		departmentChart = ChartHelper.drawPerformans(performance.getJobRecords(), 2);
-		this.calculateDepartmentData();
-		
-		monthlyChart = ChartHelper.drawPerformansMonthly(performance.getJobRecords());
-		this.checkMonths(monthlyChart);
-		this.calculateMonthsData();
-		
-		compareChart = ChartHelper.drawCompareMonthly(performance.getJobRecords(), performance.getMonths());
+		if(compareChartDraw){
+			System.out.println("PerformanceController#compareChartDraw");
+			compareChart = ChartHelper.drawCompareMonthly(performance.getJobRecords(), performance.getMonths());
+		}else{
+			System.out.println("PerformanceController#drawCharts");
+			personelChart = ChartHelper.drawPerformans(performance.getJobRecords(), 1);
+			this.checkPersonels(personelChart);
+			this.calculatePersonelData();
+			
+			departmentChart = ChartHelper.drawPerformans(performance.getJobRecords(), 2);
+			this.calculateDepartmentData();
+			
+			monthlyChart = ChartHelper.drawPerformansMonthly(performance.getJobRecords());
+			this.checkMonths(monthlyChart);
+			this.calculateMonthsData();
+		}
 	}
 	/**
 	 * convert b64png files to image file
@@ -365,5 +368,11 @@ public class PerformanceController implements Serializable{
 	}
 	public void setCompareChart(BarChartModel compareChart) {
 		this.compareChart = compareChart;
+	}
+	public boolean isCompareChartDraw() {
+		return compareChartDraw;
+	}
+	public void setCompareChartDraw(boolean compareChartDraw) {
+		this.compareChartDraw = compareChartDraw;
 	}
 }

@@ -21,6 +21,8 @@
 			      		</p:outputLabel>
 			      		<p:commandButton icon="ui-icon-person" value="Çizdir" action="#{performanceController.drawCharts}" update=":performanceChartDlgForm" oncomplete="PF('performanceChartDlg').show()"
 			      			disabled="#{empty performanceController.performance.filepath}" style="margin-left:20px;"/>
+						<p:outputLabel value="Aylık Karşılaştırma : " />
+       					<p:inputSwitch value="#{performanceController.compareChartDraw}" />
 					</div>
 				</f:facet>
 				
