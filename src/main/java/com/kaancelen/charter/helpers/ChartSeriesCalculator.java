@@ -456,8 +456,6 @@ public class ChartSeriesCalculator {
 			if(jobRecord.getYear() != null && jobRecord.getYear().equals("2016")){
 				compareMap.put(drawedMonth + "-2016", 1 + (Integer)compareMap.get(drawedMonth + "-2016"));
 			}
-			
-			System.err.println("("+(++i)+") ["+jobRecord.getYear()+"]");
 		}
 		
 		ChartSeries chartSeries = new ChartSeries();
