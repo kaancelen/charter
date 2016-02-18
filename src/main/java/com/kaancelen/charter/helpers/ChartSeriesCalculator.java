@@ -296,7 +296,7 @@ public class ChartSeriesCalculator {
 			}
 		}
 		
-		ChartSeries chartSeries = new ChartSeries("Memzuç sayısı");
+		ChartSeries chartSeries = new ChartSeries("Banka sayısı");
 		chartSeries.setData(personelMemzucMap);
 		return chartSeries;
 	}
@@ -326,7 +326,7 @@ public class ChartSeriesCalculator {
 	 * 1=> Toplam
 	 * 2=> Rapor
 	 * 3=> �ek
-	 * 4=> Memzu�
+	 * 4=> banka
 	 * @param jobRecords
 	 * @param type
 	 * @return
@@ -340,7 +340,7 @@ public class ChartSeriesCalculator {
 		departmentMap.put(ChartConstants.DEPARTMENT_LABELS[4], 0);//çek
 		departmentMap.put(ChartConstants.DEPARTMENT_LABELS[5], 0);//olumlu çek
 		departmentMap.put(ChartConstants.DEPARTMENT_LABELS[6], 0);//olumsuz çek
-		departmentMap.put(ChartConstants.DEPARTMENT_LABELS[7], 0);//memzuç
+		departmentMap.put(ChartConstants.DEPARTMENT_LABELS[7], 0);//banka
 		
 		for (JobRecord jobRecord : jobRecords) {
 			switch (type) {
@@ -427,7 +427,7 @@ public class ChartSeriesCalculator {
 			case 1: label="Toplam";break;
 			case 2: label="Rapor Sayısı";break;
 			case 3: label="Çek Sayısı";break;
-			case 4: label="Memzuç Sayısı";break;
+			case 4: label="Banka Sayısı";break;
 		}
 		
 		LineChartSeries lineChartSeries = new LineChartSeries(label);

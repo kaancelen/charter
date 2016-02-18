@@ -89,7 +89,7 @@ public class ChartHelper {
 			barChartModel.setStacked(true);
 			barChartModel.addSeries(ChartSeriesCalculator.DepartmentReport(jobRecords, 2));//Rapor
 			barChartModel.addSeries(ChartSeriesCalculator.DepartmentReport(jobRecords, 3));//Çek
-			barChartModel.addSeries(ChartSeriesCalculator.DepartmentReport(jobRecords, 4));//Memzuç
+			barChartModel.addSeries(ChartSeriesCalculator.DepartmentReport(jobRecords, 4));//banka
 			barChartModel.addSeries(ChartSeriesCalculator.DepartmentReport(jobRecords, 1));//Toplam
 			break;
 		}
@@ -114,7 +114,7 @@ public class ChartHelper {
 		
 		lineChartModel.addSeries(ChartSeriesCalculator.MonthlyReport(jobRecords, 2));//Rapor
 		lineChartModel.addSeries(ChartSeriesCalculator.MonthlyReport(jobRecords, 3));//Çek
-		lineChartModel.addSeries(ChartSeriesCalculator.MonthlyReport(jobRecords, 4));//Memzuç
+		lineChartModel.addSeries(ChartSeriesCalculator.MonthlyReport(jobRecords, 4));//banka
 		lineChartModel.addSeries(ChartSeriesCalculator.MonthlyReport(jobRecords, 1));//Toplam
 		
 		return lineChartModel;
