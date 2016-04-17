@@ -448,13 +448,16 @@ public class ChartSeriesCalculator {
 			compareMap.put(month + "-2016", 0);
 		}
 		
+		String drawedMonthLabel2015 = drawedMonth + "-2015";
+		String drawedMonthLabel2016 = drawedMonth + "-2016";
+		
 		int i=0;
 		for (JobRecord jobRecord : jobRecords) {
-			if(jobRecord.getYear() != null && jobRecord.getYear().equals("2015")){
-				compareMap.put(drawedMonth + "-2015", 1 + (Integer)compareMap.get(drawedMonth + "-2015"));
+			if(jobRecord.getYear() != null && jobRecord.getYear().equals("2015") && jobRecord.getMonth().equals(drawedMonth)){
+				compareMap.put(drawedMonthLabel2015, 1 + (Integer)compareMap.get(drawedMonthLabel2015));
 			}
-			if(jobRecord.getYear() != null && jobRecord.getYear().equals("2016")){
-				compareMap.put(drawedMonth + "-2016", 1 + (Integer)compareMap.get(drawedMonth + "-2016"));
+			if(jobRecord.getYear() != null && jobRecord.getYear().equals("2016") && jobRecord.getMonth().equals(drawedMonth)){
+				compareMap.put(drawedMonthLabel2016, 1 + (Integer)compareMap.get(drawedMonthLabel2016));
 			}
 		}
 		
