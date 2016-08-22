@@ -1,0 +1,25 @@
+.jqplot-xaxis-label{
+    color: #FF0000; 
+}
+.jqplot-yaxis-label{
+    color: #FF0000;
+}
+.jqplot-xaxis-tick{
+    color: #FF0000;
+}
+.jqplot-yaxis-tick{
+    color: #FF0000;
+}
+.jqplot-xaxis{
+    color: #FF0000;
+}
+.jqplot-yaxis{
+    color: #FF0000;
+}
+canvas.jqplot-xaxis-label{
+        color: #FF0000;
+    }
+
+div.jqplot-axis.jqplot-xaxis{
+        color: #FF0000;
+    }

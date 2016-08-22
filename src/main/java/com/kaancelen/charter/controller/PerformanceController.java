@@ -232,7 +232,7 @@ public class PerformanceController implements Serializable{
 		Map<Object, Number> report = personelChart.getSeries().get(0).getData();
 		Map<Object, Number> cek = personelChart.getSeries().get(1).getData();
 		Map<Object, Number> memzuc = personelChart.getSeries().get(2).getData();
-		Map<Object, Number> total = new TreeMap<>(new StringComparator());
+		Map<Object, Number> total = new TreeMap<Object, Number>(new StringComparator());
 		
 		for (Entry<Object, Number> entry : personelChart.getSeries().get(0).getData().entrySet()){
 			total.put(entry.getKey(), (Integer)report.get(entry.getKey()) + (Integer)memzuc.get(entry.getKey()) + (Integer)cek.get(entry.getKey()));

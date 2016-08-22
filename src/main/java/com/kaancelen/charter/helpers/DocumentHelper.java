@@ -101,7 +101,7 @@ public class DocumentHelper {
 	 * @return
 	 */
 	public static List<String> getTerms(List<Record> records) {
-		Set<String> termSet = new TreeSet<>(new TermComparator());
+		Set<String> termSet = new TreeSet<String>(new TermComparator());
 		for (Record record : records) {
 			termSet.add(record.getTerm());
 		}
@@ -181,7 +181,7 @@ public class DocumentHelper {
 	 * @return
 	 */
 	public static List<String> getPersonels(List<JobRecord> jobRecords){
-		Set<String> personelSet = new TreeSet<>(new StringComparator());
+		Set<String> personelSet = new TreeSet<String>(new StringComparator());
 		for (JobRecord record : jobRecords) {
 			personelSet.add(record.getPersonel());
 		}
@@ -193,7 +193,7 @@ public class DocumentHelper {
 	 * @return
 	 */
 	public static List<String> getMonths(List<JobRecord> jobRecords){
-		Set<String> monthSet = new TreeSet<>(new MonthComparator());
+		Set<String> monthSet = new TreeSet<String>(new MonthComparator());
 		for (JobRecord record : jobRecords) {
 			monthSet.add(record.getMonth());
 		}

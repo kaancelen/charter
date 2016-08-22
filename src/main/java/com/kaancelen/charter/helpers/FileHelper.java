@@ -10,7 +10,7 @@ import org.apache.commons.io.FileUtils;
 
 public class FileHelper {
 	/**
-	 * Verilen inputStream'i destinationPath dosyasına kaydeder.
+	 * Verilen inputStream'i destinationPath dosyasÄ±na kaydeder.
 	 */
 	public static boolean copyFile(String destinationPath, InputStream inputStream){
 		try{
@@ -43,7 +43,7 @@ public class FileHelper {
 	}
 	
 	/**
-	 * Mass objesinin 'mass' property'sini parametre olarak alır ve dosyasını siler.
+	 * Mass objesinin 'mass' property'sini parametre olarak alÄ±r ve dosyasÄ±nÄ± siler.
 	 * @param filename
 	 * @return
 	 */

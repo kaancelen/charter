@@ -2,6 +2,7 @@ package com.kaancelen.charter.helpers;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -442,7 +443,7 @@ public class ChartSeriesCalculator {
 	 * @return
 	 */
 	public static ChartSeries CompareReport(List<JobRecord> jobRecords, String drawedMonth, List<String> months){
-		Map<Object, Number> compareMap = new TreeMap<Object, Number>();
+		Map<Object, Number> compareMap = new LinkedHashMap<Object, Number>();
 		for (String month : months) {
 			compareMap.put(month + "-2015", 0);
 			compareMap.put(month + "-2016", 0);
